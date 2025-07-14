@@ -2,7 +2,8 @@
 
 Welcome to my **interactive portfolio** — a full-stack, animation-rich, and highly performant web application showcasing my projects, tech skills, and creativity in web development, AI, and 3D design.
 
-![Portfolio Preview](https://github.com/anshulkotwal/anshulkotwal/assets/preview.png)
+<img width="1860" height="923" alt="{DFE0E397-AA65-484A-9962-3700CCFB6392}" src="https://github.com/user-attachments/assets/bbffb6c0-7514-47b0-b1b9-e4a037eff863" />
+
 
 ---
 
