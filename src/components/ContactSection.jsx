@@ -75,9 +75,7 @@ export const ContactSection = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.message) {
       alert('Please fill in all fields');
       return;
@@ -86,6 +84,29 @@ export const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
+      // Netlify Forms submission
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'portfolio-contact',
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        })
+      });
+
+      if (response.ok) {
+        setShowSuccess(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setShowSuccess(false), 5000);
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      
+      // Fallback to email client
       const subject = `Portfolio Contact: ${formData.name}`;
       const body = `Name: ${formData.name}
 Email: ${formData.email}
@@ -97,16 +118,9 @@ ${formData.message}
 Sent from your portfolio contact form`;
 
       const mailtoLink = `mailto:anshulkotwal12@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink, '_blank');
       
-      window.location.href = mailtoLink;
-      
-      setShowSuccess(true);
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setShowSuccess(false), 5000);
-      
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Please try again.');
+      alert('Form submission failed. Please use the email link that just opened or contact me directly at anshulkotwal12@gmail.com');
     } finally {
       setIsSubmitting(false);
     }
