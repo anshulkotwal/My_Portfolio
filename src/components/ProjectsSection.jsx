@@ -19,9 +19,9 @@ const projects = [
     id: 2,
     title: "3D Portfolio - Zajno Inspired",
     description: "Real-time 3D transitions and shaders built with Three.js and GLSL for an interactive portfolio site.",
-    image: "/api/placeholder/400/300",
+    image: "/projects/project2.png",
     tags: ["Three.js", "GSAP", "GLSL", "Shaders", "WebGL"],
-    demoUrl: "#",
+    demoUrl: "https://zajno-awwwards.netlify.app/",
     githubUrl: "https://github.com/anshulkotwal/zajno-inspired-portfolio",
     icon: Palette,
     gradient: "from-cyan-500 to-blue-500",
@@ -31,7 +31,7 @@ const projects = [
     id: 3,
     title: "Real-Time Chess Game",
     description: "Multiplayer chess built with WebSocket sync, drag-drop UI, audio feedback, and 99.9% uptime.",
-    image: "/api/placeholder/400/300",
+    image: "/projects/project3.png",
     tags: ["Node.js", "Socket.io", "Chess.js", "WebSockets", "Tailwind"],
     demoUrl: "#",
     githubUrl: "https://github.com/anshulkotwal/chess-game-realtime",
@@ -43,38 +43,52 @@ const projects = [
     id: 4,
     title: "Cocktail - GSAP Animation Website",
     description: "Scroll-triggered animation portfolio with layered parallax and smooth UX. Built with Vite and React.",
-    image: "/api/placeholder/400/300",
+    image: "/projects/project4.png",
     tags: ["React.js", "GSAP", "Vite", "Tailwind", "ScrollTrigger"],
-    demoUrl: "#",
+    demoUrl: "https://cocktailsanshul.netlify.app/",
     githubUrl: "https://github.com/anshulkotwal/gsap-cocktail-site",
     icon: Sparkles,
     gradient: "from-orange-500 to-red-500",
     color: "orange"
   },
-  {
-    id: 5,
-    title: "WanderNest - Travel Planner",
-    description: "Travel platform for exploring, planning, and booking trips. Responsive UI with clean UX and JavaScript logic.",
-    image: "/api/placeholder/400/300",
-    tags: ["HTML", "CSS", "JavaScript", "Responsive", "DOM"],
-    demoUrl: "#",
-    githubUrl: "https://github.com/anshulkotwal/WanderNest",
-    icon: Globe,
-    gradient: "from-blue-500 to-purple-500",
-    color: "blue"
-  },
+ {
+  id: 5,
+  title: "🎬 Movie Explorer",
+  description: "A sleek, modern, and responsive movie discovery app built with React, Vite, and Tailwind CSS, powered by the TMDB API.",
+  image: "/projects/project5.png", 
+  tags: ["React", "Vite", "Tailwind CSS", "TMDB API", "Responsive"],
+  demoUrl: "https://moviedekhloo.netlify.app/", 
+  githubUrl: "https://github.com/anshulkotwal/movie-explorer",
+  icon: Globe, 
+  gradient: "from-red-500 to-yellow-500",
+  color: "red"
+},
+
   {
     id: 6,
     title: "Real-Time Geolocation Tracker",
     description: "Track users on the map in real-time using WebSockets and Leaflet.js. Optimized with Express and Socket.io.",
-    image: "/api/placeholder/400/300",
+    image: "/projects/project6.jpeg",
     tags: ["Node.js", "Socket.io", "Leaflet.js", "Express", "WebSockets"],
     demoUrl: "#",
     githubUrl: "https://github.com/anshulkotwal/Real-time-Geolocation-Tracker",
     icon: Zap,
     gradient: "from-lime-500 to-emerald-500",
     color: "lime"
-  }
+  },
+  {
+  id: 7,
+  title: "Ajay Kumar Garg Engineering College Website",
+  description: "Responsive and modern college website showcasing departments, placements, events, and achievements using HTML, CSS, and JavaScript.",
+  image: "/projects/project7.png", 
+  tags: ["HTML", "CSS", "JavaScript", "Responsive", "Education"],
+  demoUrl: "https://anshulakgec.netlify.app/", 
+  githubUrl: "https://github.com/anshulkotwal/AKGEC-Website",
+  // icon: School, 
+  gradient: "from-indigo-500 to-pink-500",
+  color: "indigo"
+}
+
 ];
 
 const ProjectCard = ({ project, index }) => {
