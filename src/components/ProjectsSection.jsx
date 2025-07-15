@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const projects = [
-  {
+    {
     id: 1,
     title: "AI Agent with Gemini API + MCP",
     description: "Intelligent chatbot using Google Gemini API and Model Context Protocol for memory-aware interactions with real-time SSE messaging.",
-    image: "/api/placeholder/400/300",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=entropy&auto=format&q=80",
     tags: ["Node.js", "Gemini API", "MCP", "SSE", "Zod"],
     demoUrl: "#",
     githubUrl: "https://github.com/anshulkotwal/gemini-mcp-chatbot",
@@ -105,8 +105,6 @@ const projects = [
 
 const FloatingParticles = () => {
   const mountRef = useRef(null);
-  const sceneRef = useRef(null);
-  const rendererRef = useRef(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -119,37 +117,45 @@ const FloatingParticles = () => {
     renderer.setClearColor(0x000000, 0);
     mountRef.current.appendChild(renderer.domElement);
 
-    sceneRef.current = scene;
-    rendererRef.current = renderer;
-
-    // Create floating particles
+    // Enhanced particle system
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 100;
+    const particlesCount = 200;
     const posArray = new Float32Array(particlesCount * 3);
+    const colorArray = new Float32Array(particlesCount * 3);
 
-    for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 10;
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      posArray[i] = (Math.random() - 0.5) * 15;
+      posArray[i + 1] = (Math.random() - 0.5) * 15;
+      posArray[i + 2] = (Math.random() - 0.5) * 15;
+      
+      // Random colors
+      colorArray[i] = Math.random();
+      colorArray[i + 1] = Math.random() * 0.8 + 0.2;
+      colorArray[i + 2] = 1;
     }
 
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
 
     const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.005,
-      color: 0x00ffff,
+      size: 0.01,
       transparent: true,
-      opacity: 0.8
+      opacity: 0.6,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending
     });
 
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
-    camera.position.z = 3;
+    camera.position.z = 5;
 
     const animate = () => {
       requestAnimationFrame(animate);
       
-      particlesMesh.rotation.x += 0.0005;
-      particlesMesh.rotation.y += 0.001;
+      particlesMesh.rotation.x += 0.0008;
+      particlesMesh.rotation.y += 0.0012;
+      particlesMesh.rotation.z += 0.0005;
 
       renderer.render(scene, camera);
     };
@@ -178,8 +184,10 @@ const FloatingParticles = () => {
 
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef();
+  const imageRef = useRef();
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -193,16 +201,18 @@ const ProjectCard = ({ project, index }) => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -15;
-      const rotateY = ((x - centerX) / centerX) * 15;
+      const rotateX = ((y - centerY) / centerY) * -25;
+      const rotateY = ((x - centerX) / centerX) * 25;
 
       setMousePosition({ x, y });
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+      card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.08, 1.08, 1.08) translateZ(50px)`;
+      card.style.transition = 'none';
     };
 
     const handleMouseLeave = () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      card.style.transform = 'perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateZ(0px)';
+      card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.320, 1)';
       setIsHovered(false);
     };
 
@@ -243,11 +253,11 @@ const ProjectCard = ({ project, index }) => {
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
-      case 'Beginner': return 'text-green-400 bg-green-500/20';
-      case 'Intermediate': return 'text-yellow-400 bg-yellow-500/20';
-      case 'Advanced': return 'text-orange-400 bg-orange-500/20';
-      case 'Expert': return 'text-red-400 bg-red-500/20';
-      default: return 'text-gray-400 bg-gray-500/20';
+      case 'Beginner': return 'text-green-400 bg-green-500/30 border-green-400/50';
+      case 'Intermediate': return 'text-yellow-400 bg-yellow-500/30 border-yellow-400/50';
+      case 'Advanced': return 'text-orange-400 bg-orange-500/30 border-orange-400/50';
+      case 'Expert': return 'text-red-400 bg-red-500/30 border-red-400/50';
+      default: return 'text-gray-400 bg-gray-500/30 border-gray-400/50';
     }
   };
 
@@ -256,37 +266,39 @@ const ProjectCard = ({ project, index }) => {
   return (
     <div
       ref={cardRef}
-      className="project-card group relative bg-gray-900/50 backdrop-blur-xl rounded-3xl overflow-hidden border border-gray-700/50 transition-all duration-500 hover:border-gray-500/50 opacity-0 translate-y-10 scale-95"
+      className="project-card group relative bg-gray-900/70 backdrop-blur-xl rounded-3xl overflow-hidden border border-gray-700/50 transition-all duration-700 hover:border-gray-500/50 opacity-0 translate-y-10 scale-95"
       style={{
-        transformOrigin: 'center',
-        transitionDelay: `${index * 0.08}s`,
+        transformOrigin: 'center center',
+        transitionDelay: `${index * 0.1}s`,
         boxShadow: isHovered
-          ? `0 25px 50px -12px rgba(0,0,0,0.8), 0 0 30px rgba(255,255,255,0.2)`
-          : '0 10px 25px -5px rgba(0,0,0,0.5)'
+          ? `0 40px 80px -20px rgba(0,0,0,0.9), 0 0 60px rgba(255,255,255,0.3), inset 0 1px 0 rgba(255,255,255,0.1)`
+          : '0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)'
       }}
     >
-      {/* Animated gradient overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+      {/* Enhanced gradient overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-700`} />
       
-      {/* Floating orb effect */}
-      <div className="absolute -inset-4 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${project.gradient} blur-xl opacity-20 animate-pulse`} />
+      {/* Multiple floating orb effects */}
+      <div className="absolute -inset-8 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${project.gradient} blur-2xl opacity-30 animate-pulse`} />
+        <div className={`absolute inset-4 rounded-3xl bg-gradient-to-l ${project.gradient} blur-xl opacity-20 animate-pulse`} style={{ animationDelay: '0.5s' }} />
       </div>
 
-      {/* Top badges */}
-      <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
+      {/* Top badges with enhanced styling */}
+      <div className="absolute top-4 left-4 right-4 z-30 flex justify-between items-start">
         <div className="flex flex-col gap-2">
-          <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getDifficultyColor(project.difficulty)} border border-current/30`}>
+          <span className={`px-3 py-1.5 text-xs font-semibold rounded-xl ${getDifficultyColor(project.difficulty)} border backdrop-blur-md`}>
             {project.difficulty}
           </span>
-          <span className="px-2 py-1 text-xs font-medium rounded-lg text-gray-300 bg-gray-800/80 border border-gray-600/50">
+          <span className="px-3 py-1.5 text-xs font-semibold rounded-xl text-gray-300 bg-gray-800/80 border border-gray-600/50 backdrop-blur-md">
             {project.category}
           </span>
         </div>
-        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} p-2.5 transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-12`}>
-          <Icon size={24} className="text-white" />
+        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${project.gradient} p-3 transform transition-all duration-500 group-hover:scale-125 group-hover:rotate-12 shadow-2xl`}>
+          <Icon size={26} className="text-white" />
         </div>
       </div>
+
 
       {/* Mouse follower effect */}
       {isHovered && (
