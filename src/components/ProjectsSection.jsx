@@ -1,9 +1,9 @@
 import { ArrowRight, ExternalLink, Github, Zap, Globe, Gamepad2, Sparkles, Brain, Palette, GraduationCap, Star, Code, Layers, Rocket } from "lucide-react";
-import { useEffect, useRef, useState ,useMemo} from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 
 const projects = [
-    {
+  {
     id: 1,
     title: "AI Agent with Gemini API + MCP",
     description: "Intelligent chatbot using Google Gemini API and Model Context Protocol for memory-aware interactions with real-time SSE messaging.",
@@ -106,9 +106,15 @@ const projects = [
 const FloatingParticles = () => {
   const mountRef = useRef(null);
   const frameRef = useRef();
+  const sceneRef = useRef(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
+
+    // Clean up any existing scene
+    if (sceneRef.current) {
+      sceneRef.current.dispose();
+    }
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -118,22 +124,37 @@ const FloatingParticles = () => {
     renderer.setClearColor(0x000000, 0);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Enhanced particle system with better performance
+    // Enhanced particle system with better performance and NaN protection
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = Math.min(200, window.innerWidth / 10); // Responsive particle count
+    const particlesCount = Math.min(200, Math.max(50, Math.floor(window.innerWidth / 10))); // Ensure minimum count
     const posArray = new Float32Array(particlesCount * 3);
     const colorArray = new Float32Array(particlesCount * 3);
     const velocityArray = new Float32Array(particlesCount * 3);
 
+    // Generate valid positions and velocities with NaN protection
     for (let i = 0; i < particlesCount * 3; i += 3) {
+      // Position with bounds checking
       posArray[i] = (Math.random() - 0.5) * 15;
       posArray[i + 1] = (Math.random() - 0.5) * 15;
       posArray[i + 2] = (Math.random() - 0.5) * 15;
       
-      // Velocity for floating effect
+      // Velocity with bounds checking
       velocityArray[i] = (Math.random() - 0.5) * 0.002;
       velocityArray[i + 1] = (Math.random() - 0.5) * 0.002;
       velocityArray[i + 2] = (Math.random() - 0.5) * 0.002;
+      
+      // Ensure no NaN values
+      if (isNaN(posArray[i]) || isNaN(posArray[i + 1]) || isNaN(posArray[i + 2])) {
+        posArray[i] = 0;
+        posArray[i + 1] = 0;
+        posArray[i + 2] = 0;
+      }
+      
+      if (isNaN(velocityArray[i]) || isNaN(velocityArray[i + 1]) || isNaN(velocityArray[i + 2])) {
+        velocityArray[i] = 0.001;
+        velocityArray[i + 1] = 0.001;
+        velocityArray[i + 2] = 0.001;
+      }
       
       // Enhanced color palette
       const hue = Math.random();
@@ -159,13 +180,29 @@ const FloatingParticles = () => {
 
     camera.position.z = 5;
 
-    // Enhanced animation with floating particles
+    // Store scene reference for cleanup
+    sceneRef.current = {
+      scene,
+      camera,
+      renderer,
+      particlesGeometry,
+      particlesMaterial,
+      dispose: () => {
+        scene.clear();
+        particlesGeometry.dispose();
+        particlesMaterial.dispose();
+        renderer.dispose();
+      }
+    };
+
+    // Enhanced animation with floating particles and NaN protection
     const animate = () => {
       frameRef.current = requestAnimationFrame(animate);
       
       const positions = particlesMesh.geometry.attributes.position.array;
       
       for (let i = 0; i < particlesCount * 3; i += 3) {
+        // Update positions with bounds checking
         positions[i] += velocityArray[i];
         positions[i + 1] += velocityArray[i + 1];
         positions[i + 2] += velocityArray[i + 2];
@@ -174,6 +211,16 @@ const FloatingParticles = () => {
         if (Math.abs(positions[i]) > 8) velocityArray[i] *= -1;
         if (Math.abs(positions[i + 1]) > 8) velocityArray[i + 1] *= -1;
         if (Math.abs(positions[i + 2]) > 8) velocityArray[i + 2] *= -1;
+        
+        // NaN protection
+        if (isNaN(positions[i]) || isNaN(positions[i + 1]) || isNaN(positions[i + 2])) {
+          positions[i] = (Math.random() - 0.5) * 15;
+          positions[i + 1] = (Math.random() - 0.5) * 15;
+          positions[i + 2] = (Math.random() - 0.5) * 15;
+          velocityArray[i] = (Math.random() - 0.5) * 0.002;
+          velocityArray[i + 1] = (Math.random() - 0.5) * 0.002;
+          velocityArray[i + 2] = (Math.random() - 0.5) * 0.002;
+        }
       }
       
       particlesMesh.geometry.attributes.position.needsUpdate = true;
@@ -200,11 +247,15 @@ const FloatingParticles = () => {
       }
       window.removeEventListener('resize', handleResize);
       if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+        try {
+          mountRef.current.removeChild(renderer.domElement);
+        } catch (e) {
+          // Element might already be removed
+        }
       }
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
-      renderer.dispose();
+      if (sceneRef.current) {
+        sceneRef.current.dispose();
+      }
     };
   }, []);
 
@@ -455,6 +506,7 @@ const ProjectCard = ({ project, index }) => {
     </article>
   );
 };
+
 const ProjectFilter = ({ activeFilter, setActiveFilter }) => {
   const filters = [
     { id: 'all', label: 'All Projects', icon: Layers },
