@@ -234,28 +234,36 @@ export const AchievementsSection = () => {
       </div>
 
       {/* Header with Floating Animation */}
-      <div className="text-center mb-16 relative z-10">
-        <div className="inline-block animate-bounce-slow mb-4">
-          <Trophy className="h-16 w-16 text-yellow-400 mx-auto animate-pulse" />
-        </div>
-        <h2 className="text-6xl font-bold mb-4 animate-text-glow">
-          My{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 animate-gradient-x">
-            Achievements
-          </span>
-        </h2>
-        <p className="text-xl text-gray-400 animate-fade-in-up">
-          Milestones in my extraordinary learning journey
-        </p>
-        <div className="flex justify-center mt-4">
-          <div className="flex space-x-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-6 w-6 text-yellow-400 animate-twinkle" style={{ animationDelay: `${i * 0.2}s` }} />
-            ))}
-          </div>
-        </div>
-      </div>
+     <div className="text-center mb-16 relative z-10">
+  <div className="flex items-center justify-center gap-4 mb-4">
+    {/* Trophy on the left */}
+    <div className="animate-bounce-slow">
+      <Trophy className="h-16 w-16 text-yellow-400 animate-pulse" />
+    </div>
+    
+    {/* Heading in the center */}
+    <div>
+      <h2 className="text-6xl font-bold animate-text-glow">
+        My{' '}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 animate-gradient-x">
+          Achievements
+        </span>
+      </h2>
+    </div>
+  </div>
 
+  {/* Subtitle and stars below */}
+  <p className="text-xl text-gray-400 animate-fade-in-up">
+    Milestones in my extraordinary learning journey
+  </p>
+  <div className="flex justify-center mt-4">
+    <div className="flex space-x-1">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className="h-6 w-6 text-yellow-400 animate-twinkle" style={{ animationDelay: `${i * 0.2}s` }} />
+      ))}
+    </div>
+  </div>
+</div>
       {/* Animated Categories */}
       <div className="flex justify-center flex-wrap gap-6 mb-12 relative z-10">
         {categories.map((cat, index) => (
