@@ -144,484 +144,515 @@ export const EducationSection = () => {
     }
   ];
 
-  const getFloatingShape = (type) => {
-    switch(type) {
-      case 0: return <GraduationCap className="h-full w-full" />;
-      case 1: return <BookOpen className="h-full w-full" />;
-      case 2: return <Award className="h-full w-full" />;
-      case 3: return <Star className="h-full w-full" />;
-      default: return <Sparkles className="h-full w-full" />;
-    }
-  };
+ const getFloatingShape = (type) => {
+  switch(type) {
+    case 0: return <GraduationCap className="h-full w-full" />;
+    case 1: return <BookOpen className="h-full w-full" />;
+    case 2: return <Award className="h-full w-full" />;
+    case 3: return <Star className="h-full w-full" />;
+    default: return <Sparkles className="h-full w-full" />;
+  }
+};
 
-  return (
-    <section ref={sectionRef} id="education" className="relative py-24 px-4 min-h-screen overflow-hidden">
-      {/* Floating Academic Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {floatingElements.map((element) => (
+return (
+  <section ref={sectionRef} id="education" className="relative py-12 md:py-24 px-4 min-h-screen overflow-hidden">
+    {/* Floating Academic Elements - Reduced density on mobile */}
+    <div className="absolute inset-0 pointer-events-none">
+      {floatingElements.map((element) => (
+        <div
+          key={element.id}
+          className="absolute text-white/10 animate-academic-float hidden md:block"
+          style={{
+            left: `${element.x}%`,
+            top: `${element.y}%`,
+            width: `${element.size}px`,
+            height: `${element.size}px`,
+            animationDuration: `${element.duration}s`,
+            animationDelay: `${element.delay}s`,
+          }}
+        >
+          {getFloatingShape(element.type)}
+        </div>
+      ))}
+    </div>
+
+    {/* Neural Network Background - Simplified on mobile */}
+    <div className="absolute inset-0 opacity-10">
+      <svg className="w-full h-full" viewBox="0 0 1000 1000">
+        {/* Animated connection lines */}
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.3" />
+          </linearGradient>
+        </defs>
+        
+        {/* Network connections - Fewer on mobile */}
+        {[...Array(window.innerWidth < 768 ? 8 : 15)].map((_, i) => (
+          <line
+            key={i}
+            x1={Math.random() * 1000}
+            y1={Math.random() * 1000}
+            x2={Math.random() * 1000}
+            y2={Math.random() * 1000}
+            stroke="url(#lineGradient)"
+            strokeWidth="1"
+            className="animate-pulse"
+            style={{ animationDelay: `${i * 0.3}s` }}
+          />
+        ))}
+        
+        {/* Network nodes - Fewer on mobile */}
+        {[...Array(window.innerWidth < 768 ? 6 : 10)].map((_, i) => (
+          <circle
+            key={i}
+            cx={Math.random() * 1000}
+            cy={Math.random() * 1000}
+            r="3"
+            fill="#3b82f6"
+            className="animate-pulse"
+            style={{ animationDelay: `${i * 0.5}s` }}
+          />
+        ))}
+      </svg>
+    </div>
+
+    {/* Section Header */}
+    <div className="text-center mb-12 md:mb-20 relative z-10">
+      {/* Creative Header Layout - Responsive */}
+      <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+        {/* Left Side Graduation Cap with Extra Effects */}
+        <div className="relative group order-2 md:order-1">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-full blur-xl opacity-40 animate-pulse"></div>
+          <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-2 md:p-3 rounded-full animate-spin-slow shadow-2xl">
+            <GraduationCap className="h-8 w-8 md:h-12 md:w-12 text-white" />
+          </div>
+          {/* Orbiting Elements - Hidden on mobile */}
+          <div className="absolute inset-0 animate-orbit hidden md:block">
+            <BookOpen className="absolute -top-2 -right-2 h-6 w-6 text-blue-400 animate-pulse" />
+          </div>
+          <div className="absolute inset-0 animate-orbit-reverse hidden md:block">
+            <Award className="absolute -bottom-2 -left-2 h-6 w-6 text-purple-400 animate-pulse" />
+          </div>
+        </div>
+        
+        {/* Title with Enhanced Effects */}
+        <div className="relative order-1 md:order-2">
+          <h2 className="text-4xl md:text-6xl font-bold mb-2 animate-title-wave text-center">
+            Educational{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-shift">
+              Journey
+            </span>
+          </h2>
+          {/* Floating Sparkles - Adjusted for mobile */}
+          <div className="absolute -top-2 md:-top-4 -right-2 md:-right-4">
+            <Sparkles className="h-6 w-6 md:h-8 md:w-8 text-yellow-400 animate-twinkle" />
+          </div>
+          <div className="absolute -bottom-1 md:-bottom-2 -left-2 md:-left-4">
+            <Star className="h-4 w-4 md:h-6 md:w-6 text-pink-400 animate-twinkle" style={{ animationDelay: '0.5s' }} />
+          </div>
+        </div>
+        
+        {/* Right Side Academic Elements - Hidden on mobile */}
+        <div className="relative order-3 hidden md:block">
+          <div className="flex flex-col gap-3">
+            <div className="relative">
+              <Brain className="h-8 w-8 text-indigo-400 animate-pulse" />
+              <div className="absolute inset-0 bg-indigo-400/20 rounded-full animate-ping"></div>
+            </div>
+            <div className="relative">
+              <Target className="h-8 w-8 text-cyan-400 animate-pulse" style={{ animationDelay: '0.3s' }} />
+              <div className="absolute inset-0 bg-cyan-400/20 rounded-full animate-ping" style={{ animationDelay: '0.3s' }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto animate-fade-in-delayed mt-6 px-4">
+        A progressive path of academic excellence and continuous learning
+      </p>
+      
+      {/* Enhanced Progress Line - Responsive */}
+      <div className="flex justify-center mt-8">
+        <div className="relative w-64 md:w-96 h-2 md:h-3 bg-white/10 rounded-full overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-progress-fill"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent animate-shimmer-wave"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-wave-2"></div>
+        </div>
+      </div>
+      
+      {/* Floating Achievement Badges - Responsive */}
+      <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-6 px-4">
+        {[
+          { icon: <Trophy className="h-3 w-3 md:h-4 md:w-4" />, label: 'Excellence' },
+          { icon: <Medal className="h-3 w-3 md:h-4 md:w-4" />, label: 'Dedication' },
+          { icon: <Star className="h-3 w-3 md:h-4 md:w-4" />, label: 'Innovation' }
+        ].map((badge, idx) => (
           <div
-            key={element.id}
-            className="absolute text-white/10 animate-academic-float"
-            style={{
-              left: `${element.x}%`,
-              top: `${element.y}%`,
-              width: `${element.size}px`,
-              height: `${element.size}px`,
-              animationDuration: `${element.duration}s`,
-              animationDelay: `${element.delay}s`,
-            }}
+            key={idx}
+            className="flex items-center gap-2 px-3 md:px-4 py-1 md:py-2 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 hover:bg-white/10 transition-all duration-300 animate-badge-float"
+            style={{ animationDelay: `${idx * 0.2}s` }}
           >
-            {getFloatingShape(element.type)}
+            <div className="text-yellow-400">
+              {badge.icon}
+            </div>
+            <span className="text-xs md:text-sm text-gray-300 font-medium">{badge.label}</span>
           </div>
         ))}
       </div>
+    </div>
 
-      {/* Neural Network Background */}
-      <div className="absolute inset-0 opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 1000 1000">
-          {/* Animated connection lines */}
-          <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.3" />
-            </linearGradient>
-          </defs>
-          
-          {/* Network connections */}
-          {[...Array(15)].map((_, i) => (
-            <line
-              key={i}
-              x1={Math.random() * 1000}
-              y1={Math.random() * 1000}
-              x2={Math.random() * 1000}
-              y2={Math.random() * 1000}
-              stroke="url(#lineGradient)"
-              strokeWidth="1"
-              className="animate-pulse"
-              style={{ animationDelay: `${i * 0.3}s` }}
-            />
-          ))}
-          
-          {/* Network nodes */}
-          {[...Array(10)].map((_, i) => (
-            <circle
-              key={i}
-              cx={Math.random() * 1000}
-              cy={Math.random() * 1000}
-              r="3"
-              fill="#3b82f6"
-              className="animate-pulse"
-              style={{ animationDelay: `${i * 0.5}s` }}
-            />
-          ))}
-        </svg>
-      </div>
-
-      {/* Section Header */}
-      <div className="text-center mb-20 relative z-10">
-        {/* Creative Header Layout */}
-        <div className="relative flex items-center justify-center gap-8">
-          {/* Left Side Graduation Cap with Extra Effects */}
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-full blur-xl opacity-40 animate-pulse"></div>
-            <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-3 rounded-full animate-spin-slow shadow-2xl">
-              <GraduationCap className="h-12 w-12 text-white" />
-            </div>
-            {/* Orbiting Elements */}
-            <div className="absolute inset-0 animate-orbit">
-              <BookOpen className="absolute -top-2 -right-2 h-6 w-6 text-blue-400 animate-pulse" />
-            </div>
-            <div className="absolute inset-0 animate-orbit-reverse">
-              <Award className="absolute -bottom-2 -left-2 h-6 w-6 text-purple-400 animate-pulse" />
-            </div>
-          </div>
-          
-          {/* Title with Enhanced Effects */}
-          <div className="relative">
-            <h2 className="text-6xl font-bold mb-2 animate-title-wave">
-              Educational{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-shift">
-                Journey
-              </span>
-            </h2>
-            {/* Floating Sparkles */}
-            <div className="absolute -top-4 -right-4">
-              <Sparkles className="h-8 w-8 text-yellow-400 animate-twinkle" />
-            </div>
-            <div className="absolute -bottom-2 -left-4">
-              <Star className="h-6 w-6 text-pink-400 animate-twinkle" style={{ animationDelay: '0.5s' }} />
-            </div>
-          </div>
-          
-          {/* Right Side Academic Elements */}
-          <div className="relative">
-            <div className="flex flex-col gap-3">
-              <div className="relative">
-                <Brain className="h-8 w-8 text-indigo-400 animate-pulse" />
-                <div className="absolute inset-0 bg-indigo-400/20 rounded-full animate-ping"></div>
-              </div>
-              <div className="relative">
-                <Target className="h-8 w-8 text-cyan-400 animate-pulse" style={{ animationDelay: '0.3s' }} />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full animate-ping" style={{ animationDelay: '0.3s' }}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto animate-fade-in-delayed mt-6">
-          A progressive path of academic excellence and continuous learning
-        </p>
-        
-        {/* Enhanced Progress Line with Multiple Layers */}
-        <div className="flex justify-center mt-8">
-          <div className="relative w-96 h-3 bg-white/10 rounded-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-progress-fill"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent animate-shimmer-wave"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-wave-2"></div>
-          </div>
-        </div>
-        
-        {/* Floating Achievement Badges */}
-        <div className="flex justify-center gap-4 mt-6">
-          {[
-            { icon: <Trophy className="h-4 w-4" />, label: 'Excellence' },
-            { icon: <Medal className="h-4 w-4" />, label: 'Dedication' },
-            { icon: <Star className="h-4 w-4" />, label: 'Innovation' }
-          ].map((badge, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 hover:bg-white/10 transition-all duration-300 animate-badge-float"
-              style={{ animationDelay: `${idx * 0.2}s` }}
-            >
-              <div className="text-yellow-400">
-                {badge.icon}
-              </div>
-              <span className="text-sm text-gray-300 font-medium">{badge.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Education Timeline */}
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Timeline Line */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 opacity-30 animate-pulse"></div>
-        
-        {educationData.map((edu, index) => (
-          <div
-            key={edu.id}
-            className={`relative flex items-center mb-16 ${
-              index % 2 === 0 ? 'justify-start' : 'justify-end'
-            } ${
-              animationTrigger 
-                ? 'animate-slide-in-timeline opacity-100' 
-                : 'opacity-0'
-            }`}
-            style={{ animationDelay: `${index * 0.4}s` }}
-          >
-            {/* Timeline Node */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
-              <div className="relative">
-                <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${edu.gradient} p-1 animate-spin-slow`}>
-                  <div className="w-full h-full bg-gray-900 rounded-full flex items-center justify-center">
-                    <div className={`text-white ${edu.accentColor}`}>
+    {/* Education Timeline - Mobile Responsive */}
+    <div className="max-w-6xl mx-auto relative z-10">
+      {/* Timeline Line - Responsive positioning */}
+      <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-0.5 md:w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 opacity-30 animate-pulse"></div>
+      
+      {educationData.map((edu, index) => (
+        <div
+          key={edu.id}
+          className={`relative flex items-start md:items-center mb-8 md:mb-16 ${
+            index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
+          } ${
+            animationTrigger 
+              ? 'animate-slide-in-timeline opacity-100' 
+              : 'opacity-0'
+          }`}
+          style={{ animationDelay: `${index * 0.4}s` }}
+        >
+          {/* Timeline Node - Responsive positioning */}
+          <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 z-20 -translate-x-1/2 md:translate-x-0">
+            <div className="relative">
+              <div className={`w-8 h-8 md:w-16 md:h-16 rounded-full bg-gradient-to-r ${edu.gradient} p-0.5 md:p-1 animate-spin-slow`}>
+                <div className="w-full h-full bg-gray-900 rounded-full flex items-center justify-center">
+                  <div className={`text-white ${edu.accentColor}`}>
+                    <div className="text-sm md:text-base">
                       {edu.icon}
                     </div>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-lg opacity-40 animate-pulse"></div>
               </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-md md:blur-lg opacity-40 animate-pulse"></div>
             </div>
+          </div>
 
-            {/* Education Card */}
+          {/* Education Card - Mobile Layout */}
+          <div 
+            className={`w-full md:w-5/12 pl-12 md:pl-0 ${
+              index % 2 === 0 
+                ? 'md:mr-auto md:pr-16' 
+                : 'md:ml-auto md:pl-16'
+            }`}
+            onMouseEnter={() => setHoveredCard(edu.id)}
+            onMouseLeave={() => setHoveredCard(null)}
+          >
             <div 
-              className={`w-5/12 ${index % 2 === 0 ? 'mr-auto pr-16' : 'ml-auto pl-16'}`}
-              onMouseEnter={() => setHoveredCard(edu.id)}
-              onMouseLeave={() => setHoveredCard(null)}
+              className="group relative transition-all duration-700 hover:scale-105"
+              style={{ 
+                background: edu.bgPattern,
+                backdropFilter: 'blur(20px)'
+              }}
             >
-              <div 
-                className="group relative transition-all duration-700 hover:scale-105"
-                style={{ 
-                  background: edu.bgPattern,
-                  backdropFilter: 'blur(20px)'
-                }}
-              >
-                {/* Card Glow Effect */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${edu.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl`}></div>
+              {/* Card Glow Effect */}
+              <div className={`absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-r ${edu.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-lg md:blur-xl`}></div>
+              
+              {/* Main Card */}
+              <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-8 shadow-xl md:shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                {/* Animated Corner Accents - Hidden on mobile */}
+                <div className="absolute top-0 left-0 w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-white/20 to-transparent rounded-tl-xl md:rounded-tl-2xl hidden md:block"></div>
+                <div className="absolute bottom-0 right-0 w-12 h-12 md:w-20 md:h-20 bg-gradient-to-tl from-white/20 to-transparent rounded-br-xl md:rounded-br-2xl hidden md:block"></div>
                 
-                {/* Main Card */}
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
-                  {/* Animated Corner Accents */}
-                  <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-white/20 to-transparent rounded-tl-2xl"></div>
-                  <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-white/20 to-transparent rounded-br-2xl"></div>
-                  
-                  {/* Institution Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
-                        {edu.institution}
-                      </h3>
-                      <div className="flex items-center gap-2 text-gray-300 mb-2">
-                        <MapPin className="h-4 w-4" />
-                        <span>{edu.location}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-400">
-                        <Calendar className="h-4 w-4" />
-                        <span>{edu.period}</span>
-                        {edu.status === 'Expected' && (
-                          <span className="ml-2 px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">
-                            {edu.status}
-                          </span>
-                        )}
-                      </div>
+                {/* Institution Header - Mobile Layout */}
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 md:mb-6">
+                  <div className="mb-4 md:mb-0">
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+                      {edu.institution}
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm md:text-base text-gray-300 mb-2">
+                      <MapPin className="h-3 w-3 md:h-4 md:w-4" />
+                      <span>{edu.location}</span>
                     </div>
-                    <div className={`text-right ${edu.accentColor}`}>
-                      <div className="text-3xl font-bold">{edu.cgpa}</div>
-                      {edu.semester && (
-                        <div className="text-sm text-gray-400">{edu.semester}</div>
+                    <div className="flex items-center gap-2 text-sm md:text-base text-gray-400">
+                      <Calendar className="h-3 w-3 md:h-4 md:w-4" />
+                      <span>{edu.period}</span>
+                      {edu.status === 'Expected' && (
+                        <span className="ml-2 px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">
+                          {edu.status}
+                        </span>
                       )}
                     </div>
                   </div>
-
-                  {/* Degree Information */}
-                  <div className="mb-6">
-                    <div className="text-xl font-semibold text-white mb-2">{edu.degree}</div>
-                    <div className={`text-lg ${edu.accentColor} font-medium`}>{edu.specialization}</div>
-                  </div>
-
-                  {/* Key Subjects */}
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                      <Brain className="h-5 w-5" />
-                      Key Subjects
-                    </h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {edu.subjects.map((subject, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-2 p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
-                        >
-                          <div className={`${edu.accentColor}`}>
-                            {subject.icon}
-                          </div>
-                          <span className="text-sm text-gray-300">{subject.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Expandable Details */}
-                  <div>
-                    <button
-                      onClick={() => toggleCard(edu.id)}
-                      className={`flex items-center gap-2 ${edu.accentColor} hover:text-white transition-colors duration-300 mb-4`}
-                    >
-                      <Trophy className="h-5 w-5" />
-                      <span className="font-semibold">Achievements & Highlights</span>
-                      {expandedCard === edu.id ? 
-                        <ChevronUp className="h-4 w-4" /> : 
-                        <ChevronDown className="h-4 w-4" />
-                      }
-                    </button>
-
-                    {expandedCard === edu.id && (
-                      <div className="space-y-4 animate-expand-content">
-                        {/* Highlights */}
-                        <div>
-                          <h5 className="text-sm font-semibold text-white mb-2">Academic Highlights</h5>
-                          <ul className="space-y-1">
-                            {edu.highlights.map((highlight, idx) => (
-                              <li
-                                key={idx}
-                                className="flex items-start gap-2 text-sm text-gray-300 animate-fade-in-stagger"
-                                style={{ animationDelay: `${idx * 0.1}s` }}
-                              >
-                                <Star className="h-3 w-3 text-yellow-400 mt-0.5 flex-shrink-0" />
-                                <span>{highlight}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Achievements */}
-                        <div>
-                          <h5 className="text-sm font-semibold text-white mb-2">Key Achievements</h5>
-                          <div className="flex flex-wrap gap-2">
-                            {edu.achievements.map((achievement, idx) => (
-                              <span
-                                key={idx}
-                                className={`px-3 py-1 bg-gradient-to-r ${edu.gradient} text-white text-xs rounded-full font-medium animate-badge-appear`}
-                                style={{ animationDelay: `${idx * 0.2}s` }}
-                              >
-                                {achievement}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
+                  <div className={`text-left md:text-right ${edu.accentColor}`}>
+                    <div className="text-2xl md:text-3xl font-bold">{edu.cgpa}</div>
+                    {edu.semester && (
+                      <div className="text-xs md:text-sm text-gray-400">{edu.semester}</div>
                     )}
                   </div>
+                </div>
+
+                {/* Degree Information */}
+                <div className="mb-4 md:mb-6">
+                  <div className="text-lg md:text-xl font-semibold text-white mb-2">{edu.degree}</div>
+                  <div className={`text-base md:text-lg ${edu.accentColor} font-medium`}>{edu.specialization}</div>
+                </div>
+
+                {/* Key Subjects - Mobile Responsive */}
+                <div className="mb-4 md:mb-6">
+                  <h4 className="text-base md:text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <Brain className="h-4 w-4 md:h-5 md:w-5" />
+                    Key Subjects
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {edu.subjects.map((subject, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-2 p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
+                      >
+                        <div className={`${edu.accentColor} text-sm`}>
+                          {subject.icon}
+                        </div>
+                        <span className="text-xs md:text-sm text-gray-300">{subject.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Expandable Details */}
+                <div>
+                  <button
+                    onClick={() => toggleCard(edu.id)}
+                    className={`flex items-center gap-2 ${edu.accentColor} hover:text-white transition-colors duration-300 mb-4 text-sm md:text-base`}
+                  >
+                    <Trophy className="h-4 w-4 md:h-5 md:w-5" />
+                    <span className="font-semibold">Achievements & Highlights</span>
+                    {expandedCard === edu.id ? 
+                      <ChevronUp className="h-3 w-3 md:h-4 md:w-4" /> : 
+                      <ChevronDown className="h-3 w-3 md:h-4 md:w-4" />
+                    }
+                  </button>
+
+                  {expandedCard === edu.id && (
+                    <div className="space-y-4 animate-expand-content">
+                      {/* Highlights */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-white mb-2">Academic Highlights</h5>
+                        <ul className="space-y-1">
+                          {edu.highlights.map((highlight, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-2 text-xs md:text-sm text-gray-300 animate-fade-in-stagger"
+                              style={{ animationDelay: `${idx * 0.1}s` }}
+                            >
+                              <Star className="h-2 w-2 md:h-3 md:w-3 text-yellow-400 mt-1 md:mt-0.5 flex-shrink-0" />
+                              <span>{highlight}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Achievements */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-white mb-2">Key Achievements</h5>
+                        <div className="flex flex-wrap gap-1 md:gap-2">
+                          {edu.achievements.map((achievement, idx) => (
+                            <span
+                              key={idx}
+                              className={`px-2 md:px-3 py-1 bg-gradient-to-r ${edu.gradient} text-white text-xs rounded-full font-medium animate-badge-appear`}
+                              style={{ animationDelay: `${idx * 0.2}s` }}
+                            >
+                              {achievement}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Animated Academic Stats - Mobile Responsive */}
+    <div className="mt-12 md:mt-20 text-center relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
+        {[
+          { label: 'Years of Education', value: '16+', icon: <Clock className="h-5 w-5 md:h-6 md:w-6" /> },
+          { label: 'Academic Excellence', value: '90%+', icon: <TrendingUp className="h-5 w-5 md:h-6 md:w-6" /> },
+          { label: 'Specializations', value: '3', icon: <Target className="h-5 w-5 md:h-6 md:w-6" /> }
+        ].map((stat, index) => (
+          <div
+            key={index}
+            className="group relative p-4 md:p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl hover:bg-white/10 transition-all duration-500 animate-stat-appear"
+            style={{ animationDelay: `${index * 0.3}s` }}
+          >
+            <div className="text-blue-400 mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
+              {stat.icon}
+            </div>
+            <div className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+              {stat.value}
+            </div>
+            <div className="text-xs md:text-sm text-gray-400">
+              {stat.label}
+            </div>
+          </div>
         ))}
       </div>
+    </div>
 
-      {/* Animated Academic Stats */}
-      <div className="mt-20 text-center relative z-10">
-        <div className="grid grid-cols-3 gap-8 max-w-4xl mx-auto">
-          {[
-            { label: 'Years of Education', value: '16+', icon: <Clock className="h-6 w-6" /> },
-            { label: 'Academic Excellence', value: '90%+', icon: <TrendingUp className="h-6 w-6" /> },
-            { label: 'Specializations', value: '3', icon: <Target className="h-6 w-6" /> }
-          ].map((stat, index) => (
-            <div
-              key={index}
-              className="group relative p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-500 animate-stat-appear"
-              style={{ animationDelay: `${index * 0.3}s` }}
-            >
-              <div className="text-blue-400 mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                {stat.icon}
-              </div>
-              <div className="text-3xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
-                {stat.value}
-              </div>
-              <div className="text-sm text-gray-400">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <style jsx>{`
+      @keyframes academic-float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(180deg); }
+      }
+      
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      
+      @keyframes title-wave {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+      }
+      
+      @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      
+      @keyframes fade-in-delayed {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes progress-fill {
+        from { transform: translateX(-100%); }
+        to { transform: translateX(100%); }
+      }
+      
+      @keyframes shimmer-wave {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+      }
+      
+      @keyframes slide-in-timeline {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes expand-content {
+        from {
+          opacity: 0;
+          transform: scaleY(0);
+        }
+        to {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+      }
+      
+      @keyframes fade-in-stagger {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes badge-appear {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes stat-appear {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes orbit {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      
+      @keyframes orbit-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      
+      @keyframes badge-float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+      }
+      
+      @keyframes shimmer-wave-2 {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+      }
+      
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1.2); }
+      }
 
-      <style jsx>{`
-        @keyframes academic-float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-30px) rotate(180deg); }
-        }
-        
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes title-wave {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-5px); }
-        }
-        
-        @keyframes gradient-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes fade-in-delayed {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes progress-fill {
-          from { transform: translateX(-100%); }
-          to { transform: translateX(100%); }
-        }
-        
-        @keyframes shimmer-wave {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
-        }
-        
+      .animate-academic-float { animation: academic-float 12s ease-in-out infinite; }
+      .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+      .animate-title-wave { animation: title-wave 3s ease-in-out infinite; }
+      .animate-gradient-shift { 
+        animation: gradient-shift 3s ease infinite; 
+        background-size: 200% 200%; 
+      }
+      .animate-fade-in-delayed { animation: fade-in-delayed 0.8s ease-out forwards; }
+      .animate-progress-fill { animation: progress-fill 2s ease-in-out infinite; }
+      .animate-shimmer-wave { animation: shimmer-wave 2s ease-in-out infinite; }
+      .animate-slide-in-timeline { animation: slide-in-timeline 0.8s ease-out forwards; }
+      .animate-expand-content { animation: expand-content 0.5s ease-out forwards; }
+      .animate-fade-in-stagger { animation: fade-in-stagger 0.4s ease-out forwards; }
+      .animate-badge-appear { animation: badge-appear 0.6s ease-out forwards; }
+      .animate-stat-appear { animation: stat-appear 0.8s ease-out forwards; }
+      .animate-orbit { animation: orbit 8s linear infinite; }
+      .animate-orbit-reverse { animation: orbit-reverse 10s linear infinite; }
+      .animate-badge-float { animation: badge-float 3s ease-in-out infinite; }
+      .animate-shimmer-wave-2 { animation: shimmer-wave-2 3s ease-in-out infinite 1s; }
+      .animate-twinkle { animation: twinkle 2s ease-in-out infinite; }
+
+      /* Mobile specific optimizations */
+      @media (max-width: 768px) {
         @keyframes slide-in-timeline {
           from {
             opacity: 0;
-            transform: translateX(-100px);
+            transform: translateX(-30px);
           }
           to {
             opacity: 1;
             transform: translateX(0);
           }
         }
-        
-        @keyframes expand-content {
-          from {
-            opacity: 0;
-            transform: scaleY(0);
-          }
-          to {
-            opacity: 1;
-            transform: scaleY(1);
-          }
-        }
-        
-        @keyframes fade-in-stagger {
-          from {
-            opacity: 0;
-            transform: translateX(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes badge-appear {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        
-        @keyframes orbit {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes orbit-reverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
-        }
-        
-        @keyframes badge-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        
-        @keyframes shimmer-wave-2 {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.3; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .animate-academic-float { animation: academic-float 12s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-        .animate-title-wave { animation: title-wave 3s ease-in-out infinite; }
-        .animate-gradient-shift { 
-          animation: gradient-shift 3s ease infinite; 
-          background-size: 200% 200%; 
-        }
-        .animate-fade-in-delayed { animation: fade-in-delayed 0.8s ease-out forwards; }
-        .animate-progress-fill { animation: progress-fill 2s ease-in-out infinite; }
-        .animate-shimmer-wave { animation: shimmer-wave 2s ease-in-out infinite; }
-        .animate-slide-in-timeline { animation: slide-in-timeline 0.8s ease-out forwards; }
-        .animate-expand-content { animation: expand-content 0.5s ease-out forwards; }
-        .animate-fade-in-stagger { animation: fade-in-stagger 0.4s ease-out forwards; }
-        .animate-badge-appear { animation: badge-appear 0.6s ease-out forwards; }
-        .animate-stat-appear { animation: stat-appear 0.8s ease-out forwards; }
-        .animate-orbit { animation: orbit 8s linear infinite; }
-        .animate-orbit-reverse { animation: orbit-reverse 10s linear infinite; }
-        .animate-badge-float { animation: badge-float 3s ease-in-out infinite; }
-        .animate-shimmer-wave-2 { animation: shimmer-wave-2 3s ease-in-out infinite 1s; }
-        .animate-twinkle { animation: twinkle 2s ease-in-out infinite; }
-      `}</style>
-    </section>
-  );
-};
+      }
+    `}</style>
+  </section>
+);
+}
