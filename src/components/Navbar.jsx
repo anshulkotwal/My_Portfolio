@@ -10,7 +10,9 @@ import {
   Sparkles,
   Sun,
   Moon,
-  Zap
+  Zap,
+  Trophy,
+  GraduationCap
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
@@ -30,8 +32,10 @@ export const Navbar = () => {
     { name: "Home", href: "#hero", icon: Home },
     { name: "About", href: "#about", icon: User },
     { name: "Experience", href: "#experience", icon: Sparkles },
+    { name: "Education", href: "#education", icon: GraduationCap },
     { name: "Skills", href: "#skills", icon: Code },
     { name: "Projects", href: "#projects", icon: Briefcase },
+    { name: "Achievements", href: "#achievements", icon: Trophy },
     { name: "Certificates", href: "#certificates", icon: Award },
     { name: "Contact", href: "#contact", icon: Mail },
   ];

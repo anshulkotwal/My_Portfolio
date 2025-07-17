@@ -16,6 +16,8 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.501.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
