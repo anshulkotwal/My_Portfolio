@@ -1,22 +1,35 @@
-import { Menu, X, Home, User, Code, Briefcase, Award, Mail, Sparkles, Zap, Sun, Moon } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  User,
+  Code,
+  Briefcase,
+  Award,
+  Mail,
+  Sparkles,
+  Sun,
+  Moon,
+  Zap
+} from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
-const cn = (...classes) => classes.filter(Boolean).join(' ');
+const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState("hero");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const navRef = useRef(null);
-  // const glowRef = useRef(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const navItems = [
     { name: "Home", href: "#hero", icon: Home },
     { name: "About", href: "#about", icon: User },
+    { name: "Experience", href: "#experience", icon: Sparkles },
     { name: "Skills", href: "#skills", icon: Code },
     { name: "Projects", href: "#projects", icon: Briefcase },
     { name: "Certificates", href: "#certificates", icon: Award },
