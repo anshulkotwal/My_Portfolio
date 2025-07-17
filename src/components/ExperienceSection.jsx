@@ -32,24 +32,24 @@ export const ExperienceSection = () => {
       location: "Remote",
       status: "Current",
       gradient: "from-blue-500 via-purple-500 to-cyan-500",
-      icon: <Briefcase className="h-6 w-6" />,
+      icon: <Briefcase className="h-5 w-5 sm:h-6 sm:w-6" />,
       achievements: [
         {
           text: "Developed scalable web applications using modern full-stack technologies",
           metric: "25% performance improvement",
-          icon: <Code2 className="h-5 w-5" />,
+          icon: <Code2 className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-blue-400 to-cyan-500"
         },
         {
           text: "Implemented responsive user interfaces with React.js and Node.js",
           metric: "30% faster load times",
-          icon: <TrendingUp className="h-5 w-5" />,
+          icon: <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-green-400 to-emerald-500"
         },
         {
           text: "Built RESTful APIs and integrated third-party services",
           metric: "5000+ concurrent users",
-          icon: <Users className="h-5 w-5" />,
+          icon: <Users className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-purple-400 to-pink-500"
         }
       ],
@@ -64,24 +64,24 @@ export const ExperienceSection = () => {
       location: "Global",
       status: "Active",
       gradient: "from-orange-500 via-red-500 to-pink-500",
-      icon: <Award className="h-6 w-6" />,
+      icon: <Award className="h-5 w-5 sm:h-6 sm:w-6" />,
       achievements: [
         {
           text: "Mentored learners across multiple cohorts in cloud technologies",
           metric: "600+ learners guided",
-          icon: <GraduationCap className="h-5 w-5" />,
+          icon: <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-orange-400 to-red-500"
         },
         {
           text: "Earned skill badges and certifications for consistent contribution",
           metric: "5200+ skill badges",
-          icon: <Star className="h-5 w-5" />,
+          icon: <Star className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-yellow-400 to-orange-500"
         },
         {
           text: "Received swags and milestone certifications for community impact",
           metric: "Multiple awards",
-          icon: <Award className="h-5 w-5" />,
+          icon: <Award className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-purple-400 to-pink-500"
         }
       ],
@@ -96,24 +96,24 @@ export const ExperienceSection = () => {
       location: "College",
       status: "Active",
       gradient: "from-green-500 via-teal-500 to-cyan-500",
-      icon: <GitBranch className="h-6 w-6" />,
+      icon: <GitBranch className="h-5 w-5 sm:h-6 sm:w-6" />,
       achievements: [
         {
           text: "Led Web Development and Git workshops for student community",
           metric: "Multiple workshops",
-          icon: <Presentation className="h-5 w-5" />,
+          icon: <Presentation className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-green-400 to-teal-500"
         },
         {
           text: "Conducted training sessions on modern web development frameworks",
           metric: "200+ students trained",
-          icon: <Users className="h-5 w-5" />,
+          icon: <Users className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-cyan-400 to-blue-500"
         },
         {
           text: "Coordinate open source initiatives and community engagement",
           metric: "Active since 2024",
-          icon: <Building className="h-5 w-5" />,
+          icon: <Building className="h-4 w-4 sm:h-5 sm:w-5" />,
           color: "from-purple-400 to-indigo-500"
         }
       ],
@@ -158,7 +158,7 @@ export const ExperienceSection = () => {
   );
 
   return (
-    <section ref={sectionRef} id="experience" className="py-24 px-4 relative overflow-hidden">
+    <section ref={sectionRef} id="experience" className="py-16 sm:py-20 lg:py-24 px-4 relative overflow-hidden">
       <FloatingElements />
       
       {/* Background pattern */}
@@ -169,24 +169,64 @@ export const ExperienceSection = () => {
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 lg:mb-16">
           <div className="relative inline-block">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-4 sm:mb-6">
               My{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
                 Experience
               </span>
             </h2>
-            <Zap className="absolute -top-2 -right-8 h-8 w-8 text-yellow-400 animate-pulse" />
+            <Zap className="absolute -top-1 -right-6 sm:-top-2 sm:-right-8 h-6 w-6 sm:h-8 sm:w-8 text-yellow-400 animate-pulse" />
           </div>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto px-4">
             Journey through my professional growth and impactful contributions.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* Timeline Navigation */}
-          <div className="lg:col-span-4">
+        {/* Mobile Timeline (visible on small screens) */}
+        <div className="lg:hidden mb-8">
+          <div className="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
+            {experiences.map((exp, index) => (
+              <button
+                key={exp.id}
+                onClick={() => setActiveExperience(index)}
+                className={`flex-shrink-0 p-3 rounded-xl transition-all duration-300 min-w-[200px] ${
+                  activeExperience === index
+                    ? 'bg-white/15 border-2 border-cyan-400/50'
+                    : 'bg-white/5 border-2 border-white/10'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg bg-gradient-to-r ${exp.gradient} ${
+                    activeExperience === index ? 'animate-pulse' : ''
+                  }`}>
+                    {exp.icon}
+                  </div>
+                  
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="font-semibold text-white text-sm truncate">
+                        {exp.company}
+                      </h4>
+                      {exp.status === 'Current' && (
+                        <span className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-full">
+                          Current
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-gray-400 text-xs mb-1 truncate">{exp.role}</p>
+                    <p className="text-gray-500 text-xs">{exp.period}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
+          {/* Desktop Timeline (hidden on mobile) */}
+          <div className="hidden lg:block lg:col-span-4">
             <div className="sticky top-8">
               <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-cyan-400" />
@@ -240,33 +280,33 @@ export const ExperienceSection = () => {
           <div className="lg:col-span-8">
             <div className="relative">
               {/* Main Experience Card */}
-              <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8 mb-8">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${currentExperience.gradient} animate-pulse`}>
+              <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className={`p-2 sm:p-3 rounded-xl bg-gradient-to-r ${currentExperience.gradient} animate-pulse flex-shrink-0`}>
                       {currentExperience.icon}
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-1">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 break-words">
                         {currentExperience.company}
                       </h3>
-                      <p className="text-lg text-cyan-400 font-semibold">
+                      <p className="text-base sm:text-lg text-cyan-400 font-semibold mb-2 break-words">
                         {currentExperience.role}
                       </p>
-                      <div className="flex items-center gap-4 mt-2 text-gray-400">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-gray-400">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
+                          <Calendar className="h-4 w-4 flex-shrink-0" />
                           <span className="text-sm">{currentExperience.period}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
+                          <MapPin className="h-4 w-4 flex-shrink-0" />
                           <span className="text-sm">{currentExperience.location}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex justify-start sm:justify-end">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                       currentExperience.type === 'Internship' 
                         ? 'bg-blue-500/20 text-blue-400'
@@ -289,22 +329,22 @@ export const ExperienceSection = () => {
                   {currentExperience.achievements.map((achievement, index) => (
                     <div
                       key={index}
-                      className="group relative p-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer"
+                      className="group relative p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-all duration-300 cursor-pointer"
                       onMouseEnter={() => setHoveredAchievement(index)}
                       onMouseLeave={() => setHoveredAchievement(null)}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg bg-gradient-to-r ${achievement.color} group-hover:animate-pulse`}>
+                        <div className={`p-2 rounded-lg bg-gradient-to-r ${achievement.color} group-hover:animate-pulse flex-shrink-0`}>
                           {achievement.icon}
                         </div>
                         
-                        <div className="flex-1">
-                          <p className="text-gray-300 mb-2 group-hover:text-white transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-gray-300 mb-2 group-hover:text-white transition-colors text-sm sm:text-base">
                             {achievement.text}
                           </p>
                           
-                          <div className="flex items-center gap-2">
-                            <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${achievement.color} text-white text-sm font-bold`}>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className={`px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r ${achievement.color} text-white text-xs sm:text-sm font-bold`}>
                               {achievement.metric}
                             </div>
                             <TrendingUp className="h-4 w-4 text-green-400 animate-bounce" />
@@ -325,7 +365,7 @@ export const ExperienceSection = () => {
                     {currentExperience.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-white/10 text-gray-300 rounded-full text-sm hover:bg-cyan-400/20 hover:text-cyan-400 transition-all duration-300 cursor-pointer"
+                        className="px-2 sm:px-3 py-1 bg-white/10 text-gray-300 rounded-full text-xs sm:text-sm hover:bg-cyan-400/20 hover:text-cyan-400 transition-all duration-300 cursor-pointer"
                       >
                         {tag}
                       </span>
@@ -335,22 +375,22 @@ export const ExperienceSection = () => {
               </div>
 
               {/* Stats Summary */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-4 text-center border border-white/10">
-                  <div className="text-2xl font-bold text-cyan-400">600+</div>
-                  <div className="text-sm text-gray-400">Learners Mentored</div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-3 sm:p-4 text-center border border-white/10">
+                  <div className="text-lg sm:text-2xl font-bold text-cyan-400">600+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Learners Mentored</div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-4 text-center border border-white/10">
-                  <div className="text-2xl font-bold text-purple-400">5200+</div>
-                  <div className="text-sm text-gray-400">Skill Badges</div>
+                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-3 sm:p-4 text-center border border-white/10">
+                  <div className="text-lg sm:text-2xl font-bold text-purple-400">5200+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Skill Badges</div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-4 text-center border border-white/10">
-                  <div className="text-2xl font-bold text-green-400">200+</div>
-                  <div className="text-sm text-gray-400">Students Trained</div>
+                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-3 sm:p-4 text-center border border-white/10">
+                  <div className="text-lg sm:text-2xl font-bold text-green-400">200+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Students Trained</div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-4 text-center border border-white/10">
-                  <div className="text-2xl font-bold text-orange-400">3+</div>
-                  <div className="text-sm text-gray-400">Active Roles</div>
+                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-3 sm:p-4 text-center border border-white/10">
+                  <div className="text-lg sm:text-2xl font-bold text-orange-400">3+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Active Roles</div>
                 </div>
               </div>
             </div>
@@ -370,6 +410,15 @@ export const ExperienceSection = () => {
         
         .animate-float {
           animation: float 3s ease-in-out infinite;
+        }
+        
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </section>
