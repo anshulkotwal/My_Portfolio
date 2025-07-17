@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
     Award,
     Star,
@@ -21,7 +20,13 @@ import {
     TrendingUp,
     BookOpen,
     Users,
-    Activity
+    Activity,
+    Crown,
+    Flame,
+    Gem,
+    Rocket,
+    Wand2,
+    Infinity
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -117,15 +122,16 @@ const FloatingParticles = () => {
     const [particles, setParticles] = useState([]);
 
     useEffect(() => {
-        const newParticles = Array.from({ length: 20 }, (_, i) => ({
+        const newParticles = Array.from({ length: 30 }, (_, i) => ({
             id: i,
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
-            size: Math.random() * 4 + 2,
-            speedX: (Math.random() - 0.5) * 2,
-            speedY: (Math.random() - 0.5) * 2,
-            opacity: Math.random() * 0.5 + 0.1,
-            color: ['#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444'][Math.floor(Math.random() * 5)]
+            size: Math.random() * 6 + 2,
+            speedX: (Math.random() - 0.5) * 3,
+            speedY: (Math.random() - 0.5) * 3,
+            opacity: Math.random() * 0.7 + 0.2,
+            color: ['#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#8B5CF6'][Math.floor(Math.random() * 7)],
+            shape: Math.random() > 0.5 ? 'circle' : 'square'
         }));
         setParticles(newParticles);
 
@@ -135,7 +141,7 @@ const FloatingParticles = () => {
                 x: (particle.x + particle.speedX + window.innerWidth) % window.innerWidth,
                 y: (particle.y + particle.speedY + window.innerHeight) % window.innerHeight
             })));
-        }, 50);
+        }, 40);
 
         return () => clearInterval(interval);
     }, []);
@@ -145,7 +151,7 @@ const FloatingParticles = () => {
             {particles.map(particle => (
                 <div
                     key={particle.id}
-                    className="absolute rounded-full animate-pulse"
+                    className={`absolute ${particle.shape === 'circle' ? 'rounded-full' : 'rounded-sm'} animate-pulse`}
                     style={{
                         left: particle.x,
                         top: particle.y,
@@ -153,7 +159,8 @@ const FloatingParticles = () => {
                         height: particle.size,
                         backgroundColor: particle.color,
                         opacity: particle.opacity,
-                        filter: 'blur(1px)'
+                        filter: 'blur(1px)',
+                        transform: `rotate(${particle.x * 0.1}deg)`
                     }}
                 />
             ))}
@@ -161,10 +168,29 @@ const FloatingParticles = () => {
     );
 };
 
+const MagicOrb = ({ x, y, color, size = 20 }) => {
+    return (
+        <div
+            className="absolute pointer-events-none animate-pulse"
+            style={{
+                left: x,
+                top: y,
+                width: size,
+                height: size,
+                background: `radial-gradient(circle, ${color}80 0%, ${color}40 50%, transparent 70%)`,
+                borderRadius: '50%',
+                filter: 'blur(2px)',
+                animation: `float 3s ease-in-out infinite`
+            }}
+        />
+    );
+};
+
 const CertificateCard = ({ certificate, index }) => {
     const cardRef = useRef();
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [magicOrbs, setMagicOrbs] = useState([]);
 
     useEffect(() => {
         const card = cardRef.current;
@@ -184,19 +210,31 @@ const CertificateCard = ({ certificate, index }) => {
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                const rotateX = Math.max(-15, Math.min(15, ((y - centerY) / centerY) * -8));
-                const rotateY = Math.max(-15, Math.min(15, ((x - centerX) / centerX) * 8));
+                const rotateX = Math.max(-20, Math.min(20, ((y - centerY) / centerY) * -10));
+                const rotateY = Math.max(-20, Math.min(20, ((x - centerX) / centerX) * 10));
 
                 setMousePosition({ x, y });
 
                 card.style.transform = `
-                    perspective(1000px) 
+                    perspective(1200px) 
                     rotateX(${rotateX}deg) 
                     rotateY(${rotateY}deg) 
-                    translateZ(20px)
-                    scale3d(1.02, 1.02, 1.02)
+                    translateZ(30px)
+                    scale3d(1.05, 1.05, 1.05)
                 `;
                 card.style.transition = 'none';
+
+                // Generate magic orbs on hover
+                if (Math.random() > 0.8) {
+                    const newOrb = {
+                        id: Date.now() + Math.random(),
+                        x: x + (Math.random() - 0.5) * 100,
+                        y: y + (Math.random() - 0.5) * 100,
+                        color: ['#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444'][Math.floor(Math.random() * 5)],
+                        size: Math.random() * 15 + 5
+                    };
+                    setMagicOrbs(prev => [...prev.slice(-5), newOrb]);
+                }
 
                 animationFrameId = null;
             });
@@ -210,11 +248,12 @@ const CertificateCard = ({ certificate, index }) => {
 
             clearTimeout(tiltTimeout);
             tiltTimeout = setTimeout(() => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)';
-                card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.320, 1)';
+                card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)';
+                card.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.320, 1)';
             }, 50);
 
             setIsHovered(false);
+            setMagicOrbs([]);
         };
 
         const handleMouseEnter = () => {
@@ -269,6 +308,14 @@ const CertificateCard = ({ certificate, index }) => {
     };
 
     const Icon = certificate.icon;
+    const levelIcons = {
+        'Beginner': Star,
+        'Intermediate': Zap,
+        'Professional': Crown,
+        'Advanced': Gem,
+        'Expert': Infinity
+    };
+    const LevelIcon = levelIcons[certificate.level] || Star;
 
     return (
         <div
@@ -278,120 +325,140 @@ const CertificateCard = ({ certificate, index }) => {
                 transformOrigin: 'center center',
                 transitionDelay: `${index * 0.1}s`,
                 boxShadow: isHovered
-                    ? `0 40px 80px -20px rgba(0,0,0,0.9), 0 0 60px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.1)`
-                    : '0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)'
+                    ? `0 50px 100px -20px rgba(0,0,0,0.9), 0 0 80px rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.15)`
+                    : '0 25px 50px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)'
             }}
         >
-            {/* Enhanced glow effect */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${certificate.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-700`} />
+            {/* Magic orbs */}
+            {magicOrbs.map(orb => (
+                <MagicOrb key={orb.id} x={orb.x} y={orb.y} color={orb.color} size={orb.size} />
+            ))}
 
-            {/* Animated border */}
+            {/* Enhanced glow effect */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${certificate.gradient} opacity-0 group-hover:opacity-30 transition-opacity duration-700`} />
+
+            {/* Animated border with sparkles */}
             <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${certificate.gradient} blur-sm opacity-30 animate-pulse`} />
+                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${certificate.gradient} blur-sm opacity-40 animate-pulse`} />
+                <div className="absolute inset-0 rounded-3xl border-2 border-gradient-to-r from-white/20 via-transparent to-white/20 animate-spin" style={{ animationDuration: '8s' }} />
             </div>
 
-            {/* Mouse follower effect */}
+            {/* Mouse follower effect with enhanced visuals */}
             {isHovered && (
                 <div
                     className="absolute pointer-events-none transition-opacity duration-300 z-10"
                     style={{
-                        left: mousePosition.x - 50,
-                        top: mousePosition.y - 50,
-                        width: 100,
-                        height: 100,
-                        background: `radial-gradient(circle, ${certificate.gradient.includes('purple') ? 'rgba(168,85,247,0.4)' : 'rgba(6,182,212,0.4)'} 0%, transparent 70%)`,
+                        left: mousePosition.x - 75,
+                        top: mousePosition.y - 75,
+                        width: 150,
+                        height: 150,
+                        background: `radial-gradient(circle, ${certificate.gradient.includes('purple') ? 'rgba(168,85,247,0.6)' : 'rgba(6,182,212,0.6)'} 0%, transparent 70%)`,
                         borderRadius: '50%',
-                        filter: 'blur(20px)'
+                        filter: 'blur(25px)',
+                        animation: 'pulse 1s ease-in-out infinite'
                     }}
                 />
             )}
 
-            {/* Category badge */}
+            {/* Category badge with enhanced styling */}
             <div className="absolute top-4 right-4 z-20">
-                <div className={`px-2 py-1 text-xs font-semibold rounded-lg bg-gradient-to-r ${certificate.gradient} text-white shadow-lg`}>
-                    {certificate.category}
+                <div className={`px-3 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r ${certificate.gradient} text-white shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20`}>
+                    <div className="flex items-center gap-1">
+                        <Sparkles size={10} />
+                        {certificate.category}
+                    </div>
                 </div>
             </div>
 
             {/* Header */}
-            <div className="p-7 pb-4">
-                <div className="flex items-start justify-between mb-6">
-                    <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${certificate.gradient} p-3.5 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-2xl`}>
-                        <Icon size={28} className="text-white" />
+            <div className="p-6 pb-4">
+                <div className="flex items-start justify-between mb-5">
+                    <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${certificate.gradient} p-3 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 shadow-2xl`}>
+                        <Icon size={24} className="text-white" />
                         <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
                     </div>
 
                     <div className="flex flex-col items-end gap-2">
                         <div className="flex items-center gap-2">
                             {certificate.verified && (
-                                <div className="flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-lg text-green-400 bg-green-500/20 border border-green-400/40 backdrop-blur-sm">
-                                    <CheckCircle size={12} />
+                                <div className="flex items-center gap-1 px-2 py-1 text-xs font-bold rounded-lg text-green-400 bg-green-500/20 border border-green-400/40 backdrop-blur-sm">
+                                    <CheckCircle size={10} />
                                     Verified
                                 </div>
                             )}
-                            <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${getLevelColor(certificate.level)} border backdrop-blur-sm`}>
+                            <span className={`px-2 py-1 text-xs font-bold rounded-lg ${getLevelColor(certificate.level)} border backdrop-blur-sm flex items-center gap-1`}>
+                                <LevelIcon size={10} />
                                 {certificate.level}
                             </span>
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-400">
-                            <Calendar size={12} />
+                            <Calendar size={10} />
                             {certificate.date}
                         </div>
                     </div>
                 </div>
 
-                <h3 className={`text-xl font-bold mb-3 bg-gradient-to-r ${certificate.gradient} bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300`}>
+                <h3 className={`text-lg font-black mb-2 bg-gradient-to-r ${certificate.gradient} bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300`}>
                     {certificate.title}
                 </h3>
 
-                <p className="text-gray-300 text-sm mb-3 font-medium flex items-center gap-2">
-                    <Verified size={14} className="text-blue-400" />
+                <p className="text-gray-300 text-sm mb-2 font-semibold flex items-center gap-2">
+                    <Verified size={12} className="text-blue-400" />
                     {certificate.issuer}
                 </p>
 
-                <p className="text-gray-400 text-sm mb-5 leading-relaxed">
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed">
                     {certificate.description}
                 </p>
 
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2 mb-5">
+                {/* Skills with enhanced animations */}
+                <div className="flex flex-wrap gap-2 mb-4">
                     {certificate.skills.map((skill, skillIndex) => (
                         <span
                             key={skill}
-                            className={`px-3 py-1.5 text-xs font-medium rounded-full bg-gradient-to-r ${certificate.gradient} bg-opacity-20 text-white/90 border border-white/20 backdrop-blur-sm transform transition-all duration-300 hover:scale-105 hover:bg-opacity-30`}
-                            style={{ animationDelay: `${skillIndex * 0.05}s` }}
+                            className={`px-2.5 py-1 text-xs font-semibold rounded-full bg-gradient-to-r ${certificate.gradient} bg-opacity-20 text-white/90 border border-white/20 backdrop-blur-sm transform transition-all duration-300 hover:scale-110 hover:bg-opacity-30 hover:rotate-1 cursor-default`}
+                            style={{
+                                animationDelay: `${skillIndex * 0.05}s`,
+                                animation: 'fadeInUp 0.5s ease-out forwards'
+                            }}
                         >
                             {skill}
                         </span>
                     ))}
                 </div>
 
-                {/* Stats */}
-                <div className="flex items-center justify-between text-xs text-gray-400 mb-6 bg-gray-800/50 rounded-xl p-3 backdrop-blur-sm">
+                {/* Enhanced Stats */}
+                <div className="flex items-center justify-between text-xs text-gray-400 mb-5 bg-gray-800/50 rounded-xl p-3 backdrop-blur-sm border border-gray-700/50">
                     <div className="flex items-center gap-2">
-                        <Clock size={12} />
-                        <span>{certificate.hours}</span>
+                        <Clock size={10} />
+                        <span className="font-semibold">{certificate.hours}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Shield size={12} />
-                        <span className="font-mono">{certificate.credentialId.slice(-8)}</span>
+                        <Shield size={10} />
+                        <span className="font-mono font-bold">{certificate.credentialId.slice(-8)}</span>
                     </div>
                 </div>
 
-                {/* Action button */}
-                <button 
-                    className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r ${certificate.gradient} text-white text-sm font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-current/30 group/btn relative overflow-hidden`}
+                {/* Enhanced Action button */}
+                <button
+                    className={`w-full flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r ${certificate.gradient} text-white text-sm font-bold transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-current/40 group/btn relative overflow-hidden`}
                     onClick={() => window.open(certificate.link, '_blank')}
                 >
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                    <ExternalLink size={16} className="group-hover/btn:rotate-12 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+                    <ExternalLink size={14} className="group-hover/btn:rotate-12 transition-transform duration-300" />
                     View Certificate
-                    <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
+                    <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
                 </button>
             </div>
 
-            {/* Bottom accent */}
+            {/* Enhanced bottom accent */}
             <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${certificate.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500`} />
+
+            {/* Animated corner decorations */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-white/20 rounded-tl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-white/20 rounded-br-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
     );
 };
@@ -423,8 +490,8 @@ export const CertificatesSection = () => {
     }, []);
 
     const categories = ['all', ...new Set(certificates.map(cert => cert.category))];
-    const filteredCertificates = filter === 'all' 
-        ? certificates 
+    const filteredCertificates = filter === 'all'
+        ? certificates
         : certificates.filter(cert => cert.category === filter);
 
     const handleLoadMore = () => {
@@ -441,52 +508,87 @@ export const CertificatesSection = () => {
             <FloatingParticles />
 
             <div ref={containerRef} className="container mx-auto max-w-7xl relative z-10">
-                {/* Enhanced Header */}
+                {/* Enhanced Header with more creative elements */}
                 <header
                     ref={titleRef}
-                    className="text-center mb-24 opacity-0 translate-y-10 transition-all duration-1000"
+                    className="text-center mb-20 opacity-0 translate-y-10 transition-all duration-1000"
                 >
-                    <div className="flex justify-center items-center gap-6 mb-10">
-                        <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-purple-500 to-pink-500 p-4 animate-bounce shadow-2xl">
+                    <div className="flex justify-center items-center gap-8 mb-8">
+                        <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-purple-500 to-pink-500 p-4 animate-bounce shadow-2xl relative">
                             <Award size={32} className="text-white" />
+                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-ping" />
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-black bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent animate-pulse">
-                            Certifications
-                        </h1>
-                        <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-500 p-4 animate-bounce shadow-2xl" style={{animationDelay: '0.5s'}}>
+                        <div className="relative">
+                            <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent animate-pulse">
+                                Certifications
+                            </h1>
+                            <div className="absolute -top-4 -right-4 text-yellow-400 animate-spin">
+                                <Sparkles size={24} />
+                            </div>
+                            <div className="absolute -bottom-2 -left-2 text-blue-400 animate-bounce">
+                                <Sparkles size={20} /> {/* Replaced Magic with Sparkles */}
+                            </div>
+                        </div>
+                        <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-500 p-4 animate-bounce shadow-2xl relative" style={{ animationDelay: '0.5s' }}>
                             <Trophy size={32} className="text-white" />
+                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
                         </div>
                     </div>
-                    <p className="text-gray-300 text-xl max-w-5xl mx-auto leading-relaxed mb-8">
+                    <p className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed mb-6">
                         Professional certifications and achievements that validate my expertise across
                         cutting-edge technologies, frameworks, and development practices. Each certificate
                         represents dedication to continuous learning and industry excellence.
                     </p>
-                    
-                    {/* Category filter */}
-                    <div className="flex flex-wrap justify-center gap-3 mb-12">
-                        {categories.map(category => (
+
+                    {/* Enhanced Category filter */}
+                    <div className="flex flex-wrap justify-center gap-3 mb-10">
+                        {categories.map((category, index) => (
                             <button
                                 key={category}
                                 onClick={() => setFilter(category)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                                    filter === category
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                                        : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-600/50'
-                                }`}
+                                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-500 transform hover:scale-105 ${filter === category
+                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
+                                        : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-600/50 hover:border-gray-500/50'
+                                    }`}
+                                style={{
+                                    animationDelay: `${index * 0.1}s`,
+                                    animation: 'fadeInUp 0.5s ease-out forwards'
+                                }}
                             >
-                                {category === 'all' ? 'All Categories' : category}
+                                {category === 'all' ? (
+                                    <span className="flex items-center gap-1">
+                                        <Infinity size={14} />
+                                        All Categories
+                                    </span>
+                                ) : (
+                                    category
+                                )}
                             </button>
                         ))}
                     </div>
                 </header>
 
                 {/* Certificates grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     {filteredCertificates.slice(0, visibleCount).map((certificate, index) => (
                         <CertificateCard key={certificate.id} certificate={certificate} index={index} />
                     ))}
                 </div>
+
+                {/* Enhanced Load more button */}
+                {visibleCount < filteredCertificates.length && (
+                    <div className="text-center mb-16">
+                        <button
+                            onClick={handleLoadMore}
+                            className="inline-flex items-center gap-4 px-10 py-5 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black rounded-3xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/40 group focus:outline-none focus:ring-2 focus:ring-purple-500/50 relative overflow-hidden"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                            <Sparkles size={24} className="group-hover:rotate-12 transition-transform duration-300" />
+                            Load More Certificates
+                            <Rocket size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                        </button>
+                    </div>
+                )}
 
                 {/* Load more button */}
                 {visibleCount < filteredCertificates.length && (
