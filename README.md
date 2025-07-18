@@ -1,13 +1,44 @@
 # 🌐 Anshul Kotwal | Interactive Developer Portfolio
 
-[![GitHub Stars](https://img.shields.io/github/stars/anshulkotwal/portfolio?style=for-the-badge)](https://github.com/anshulkotwal/portfolio/stargazers)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
 
 > A cutting-edge interactive portfolio showcasing full-stack development expertise with immersive 3D elements and AI integration
 
-![Portfolio Showcase](https://github.com/anshulkotwal/assets/blob/main/portfolio-showcase.gif?raw=true)
+## 🎨 UI Showcase
+
+<div align="center" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin: 3rem 0;">
+
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
+  <img src="<img width="1764" height="945" alt="{9750A525-DD5A-4EC7-8BAE-D19079425846}" src="https://github.com/user-attachments/assets/099b5522-e01e-44df-81e3-c2233299a45b" />
+" alt="Hero Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+  <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
+    <h3 style="margin: 0 0 8px 0;">🚀 Hero Section</h3>
+    <p style="margin: 0; color: #666; font-size: 0.9em;">3D animated intro with scroll-triggered effects</p>
+  </div>
+</div>
+
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
+  <img src="<img width="1349" height="884" alt="{00B805CC-884F-4EB4-BCF9-0E6B1162AE55}" src="https://github.com/user-attachments/assets/e40d3833-3330-4ead-a8f1-4f2ebc2fb61a" />
+" alt="About Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+  <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
+    <h3 style="margin: 0 0 8px 0;">👨‍💻 About Me</h3>
+    <p style="margin: 0; color: #666; font-size: 0.9em;">Interactive skill graph with animated progress bars</p>
+  </div>
+</div>
+
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
+  <img src="<img width="1310" height="783" alt="{3057DD9B-9D2C-403B-B937-9A43B4F8CAB4}" src="https://github.com/user-attachments/assets/6eccd058-f195-47b8-bdd2-4ef1e5c2778f" />
+" alt="Contact Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+  <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
+    <h3 style="margin: 0 0 8px 0;">📬 Contact</h3>
+    <p style="margin: 0; color: #666; font-size: 0.9em;">Form with floating labels and micro-interactions</p>
+  </div>
+</div>
+
+</div>
+
 
 ## ✨ Highlights
 
@@ -94,12 +125,12 @@ Get started with these simple steps:
 git clone https://github.com/anshulkotwal/My_Portfolio.git
 cd My_Portfolio
 ```
-###2. Install dependencies
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-###3. Start development server
+### 3. Start development server
 ```bash
 npm run dev
 ```
