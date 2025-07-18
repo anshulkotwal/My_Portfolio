@@ -183,7 +183,7 @@ Fork the project
 
 4. Open a Pull Request
 
-##📜 License
+## 📜 License
 Distributed under the MIT License. See LICENSE for more information.
 
 ## 📬 Contact
