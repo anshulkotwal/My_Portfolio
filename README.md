@@ -99,28 +99,45 @@
 </p>
 
 ## 🏗 Project Structure
-
 ```bash
 portfolio/
-├── public/                  # Static assets
-│   ├── models/              # 3D model files
-│   ├── textures/            # GLSL textures
-│   └── previews/            # Project screenshots
-├── src/
-│   ├── components/          # React components
-│   │   ├── 3d/              # Three.js components
-│   │   ├── chess/           # Chess game components
-│   │   └── ui/              # UI components
-│   ├── contexts/            # React contexts
-│   ├── hooks/               # Custom hooks
-│   ├── lib/                 # Utility functions
-│   ├── pages/               # Page components
-│   ├── styles/              # Global styles
-│   ├── App.jsx              # Main app component
-│   └── main.jsx             # Entry point
-├── .github/                 # GitHub configurations
-├── package.json
-└── README.md
+├── public/
+│   ├── vite.svg
+│   └── assets/          # For images/fonts
+│
+└── src/
+    ├── components/
+    │   ├── ui/          # Atomic UI components
+    │   │   ├── toast.jsx
+    │   │   └── toaster.jsx
+    │   │
+    │   ├── AboutSection.jsx
+    │   ├── AchievementsSection.jsx
+    │   ├── CertificatesSection.jsx
+    │   ├── ContactSection.jsx
+    │   ├── EducationSection.jsx
+    │   ├── ExperienceSection.jsx
+    │   ├── Footer.jsx
+    │   ├── HeroSection.jsx
+    │   ├── Navbar.jsx
+    │   ├── ProjectsSection.jsx    # Contains chess/ai as project cards
+    │   ├── SkillsSection.jsx
+    │   ├── StarBackground.jsx
+    │   └── ThemeToggle.jsx
+    │
+    ├── hooks/
+    │   └── use-toast.js
+    │
+    ├── lib/
+    │   └── utils.js     # For shared utilities
+    │
+    ├── pages/
+    │   ├── Home.jsx
+    │   └── NotFound.jsx
+    │
+    ├── App.jsx          # Main app component
+    ├── index.css        # Global styles
+    └── main.jsx         # Entry point
 ```
 
 ## 🛠 Local Development
