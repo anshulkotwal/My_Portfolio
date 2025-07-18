@@ -10,35 +10,42 @@
 
 <div align="center" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin: 3rem 0;">
 
-<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
-  <img src="<img width="1764" height="945" alt="{9750A525-DD5A-4EC7-8BAE-D19079425846}" src="https://github.com/user-attachments/assets/099b5522-e01e-44df-81e3-c2233299a45b" />
-" alt="Hero Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; background: white;">
+  <img width="1764" height="945" src="https://github.com/user-attachments/assets/099b5522-e01e-44df-81e3-c2233299a45b" alt="Hero Section" style="border: 1px solid rgba(0,0,0,0.05); width: 100%; height: auto; object-fit: cover;">
   <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
-    <h3 style="margin: 0 0 8px 0;">🚀 Hero Section</h3>
+    <h3 style="margin: 0 0 8px 0; color: #333;">🚀 Hero Section</h3>
     <p style="margin: 0; color: #666; font-size: 0.9em;">3D animated intro with scroll-triggered effects</p>
   </div>
 </div>
 
-<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
-  <img src="<img width="1349" height="884" alt="{00B805CC-884F-4EB4-BCF9-0E6B1162AE55}" src="https://github.com/user-attachments/assets/e40d3833-3330-4ead-a8f1-4f2ebc2fb61a" />
-" alt="About Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; background: white;">
+  <img width="1349" height="884" src="https://github.com/user-attachments/assets/e40d3833-3330-4ead-a8f1-4f2ebc2fb61a" alt="About Section" style="border: 1px solid rgba(0,0,0,0.05); width: 100%; height: auto; object-fit: cover;">
   <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
-    <h3 style="margin: 0 0 8px 0;">👨‍💻 About Me</h3>
+    <h3 style="margin: 0 0 8px 0; color: #333;">👨‍💻 About Me</h3>
     <p style="margin: 0; color: #666; font-size: 0.9em;">Interactive skill graph with animated progress bars</p>
   </div>
 </div>
 
-<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
-  <img src="<img width="1310" height="783" alt="{3057DD9B-9D2C-403B-B937-9A43B4F8CAB4}" src="https://github.com/user-attachments/assets/6eccd058-f195-47b8-bdd2-4ef1e5c2778f" />
-" alt="Contact Section" style="border: 1px solid rgba(255,255,255,0.1); max-width: 100%; height: auto; object-fit: cover;">
+<div style="box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; background: white;">
+  <img width="1310" height="783" src="https://github.com/user-attachments/assets/6eccd058-f195-47b8-bdd2-4ef1e5c2778f" alt="Contact Section" style="border: 1px solid rgba(0,0,0,0.05); width: 100%; height: auto; object-fit: cover;">
   <div style="padding: 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fb 100%);">
-    <h3 style="margin: 0 0 8px 0;">📬 Contact</h3>
+    <h3 style="margin: 0 0 8px 0; color: #333;">📬 Contact</h3>
     <p style="margin: 0; color: #666; font-size: 0.9em;">Form with floating labels and micro-interactions</p>
   </div>
 </div>
 
 </div>
 
+<details>
+<summary>✨ Design Features</summary>
+
+- **Responsive Grid**: Adapts to all screen sizes
+- **Hover Effects**: Cards scale slightly on hover
+- **Optimized Images**: Proper aspect ratio preservation
+- **Dark Mode Ready**: Add `@media (prefers-color-scheme: dark)` styles
+- **Accessible**: Semantic HTML with alt text
+
+</details>
 
 ## ✨ Highlights
 
