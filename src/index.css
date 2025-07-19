@@ -18,6 +18,8 @@
   --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
   --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
   --animate-meteor: meteor 5s linear infinite;
+  --animate-pulse-slow-fade: pulse-slow-fade 3s ease-in-out infinite; /* */
+
 
   @keyframes float {
     0%,
@@ -60,19 +62,24 @@
       opacity: 0;
     }
   }
+  /* Added for the glow effect on active nav items */
+  @keyframes pulse-slow-fade {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
 }
 
 @layer base {
-  :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+  :root { /* Light mode defaults */
+    --background: 210 20% 98%; /* Adjusted for better contrast */
+    --foreground: 222 47% 1%; /* Kept very dark for strong contrast */
 
-    --card: 0 0% 100%;
+    --card: 0 0% 100%; /* Pure white for cards, rely on shadows/borders for separation */
 
     --primary: 250 47% 60%;
     --primary-foreground: 210 40% 98%;
 
-    --border: 214 32% 91%;
+    --border: 214 32% 80%; /* Darker border for better visibility */
   }
 
   .dark {
@@ -139,9 +146,9 @@
 }
 
 @utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
-         hover:scale-105 active:scale-95;
+  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
+          transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
+          hover:scale-105 active:scale-95;
 }
 
 @utility star {

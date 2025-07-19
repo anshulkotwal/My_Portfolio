@@ -1,11 +1,11 @@
-
 /* eslint-disable react/no-unknown-property */
 import { useState, useEffect, useRef } from 'react';
 import {
   Trophy, Globe, Code, Database, Star, Sparkles, Eye, EyeOff,
   ChevronRight, Image, ZoomIn, X, Award, Target, Calendar,
-  Users, Crown, 
-  TrendingUp, Flame, GitBranch, Sun, Moon
+  Users, Crown,
+  TrendingUp, Flame, GitBranch, Sun, Moon,
+  Move // Import Move icon for drag functionality
 } from 'lucide-react';
 
 export function AchievementsSection() {
@@ -20,6 +20,17 @@ export function AchievementsSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState({});
   const [isDarkMode, setIsDarkMode] = useState(true);
   const sectionRef = useRef(null);
+
+  // --- NEW STATE FOR IMAGE MODAL ZOOM/PAN ---
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragStartY, setDragStartY] = useState(0);
+  const imageRef = useRef(null); // Ref for the image inside the modal
+  // --- END NEW STATE ---
+
 
   useEffect(() => {
     const checkMobile = () => {
@@ -36,10 +47,10 @@ export function AchievementsSection() {
     const handleChange = (e) => {
       setIsDarkMode(e.matches);
     };
-    
+
     setIsDarkMode(mediaQuery.matches);
     mediaQuery.addEventListener('change', handleChange);
-    
+
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
@@ -99,15 +110,80 @@ export function AchievementsSection() {
     }));
   };
 
-  const openImageModal = (image) => {
+  // MODIFIED: Added initialZoom parameter with default value
+  const openImageModal = (image, initialZoom = 1) => {
     setSelectedImage(image);
     setShowImageModal(true);
+    // Set zoom/pan based on initialZoom value
+    setZoomLevel(initialZoom);
+    setPanX(0);
+    setPanY(0);
   };
 
   const closeImageModal = () => {
     setShowImageModal(false);
     setSelectedImage(null);
+    setZoomLevel(1); // Reset zoom
+    setPanX(0);     // Reset pan
+    setPanY(0);
   };
+
+  // --- FUNCTIONS FOR ZOOM/PAN (These remain unchanged as they work inside the modal) ---
+  const handleZoomClick = () => {
+    setZoomLevel(prev => (prev === 1 ? 2 : 1)); // Toggle between 1x and 2x zoom
+    setPanX(0); // Reset pan when zooming
+    setPanY(0);
+  };
+
+  const handleMouseDown = (e) => {
+    if (zoomLevel > 1) {
+      setIsDragging(true);
+      setDragStartX(e.clientX - panX);
+      setDragStartY(e.clientY - panY);
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      const newPanX = e.clientX - dragStartX;
+      const newPanY = e.clientY - dragStartY;
+
+      // Optional: Constrain panning to image boundaries
+      const img = imageRef.current;
+      if (img) {
+        // You might need to adjust these calculations based on the image's actual display size vs natural size
+        // For simplicity, without knowing parent div dimensions, this is a basic constraint
+        const imgWidth = img.offsetWidth * zoomLevel; // Current displayed width
+        const imgHeight = img.offsetHeight * zoomLevel; // Current displayed height
+        const containerWidth = img.parentElement.offsetWidth; // Modal content area width
+        const containerHeight = img.parentElement.offsetHeight; // Modal content area height
+
+        const maxX = Math.max(0, (imgWidth - containerWidth) / 2 / zoomLevel); // Max pan based on scaled image
+        const maxY = Math.max(0, (imgHeight - containerHeight) / 2 / zoomLevel);
+
+        setPanX(Math.max(-maxX, Math.min(maxX, newPanX)));
+        setPanY(Math.max(-maxY, Math.min(maxY, newPanY)));
+      } else {
+        setPanX(newPanX);
+        setPanY(newPanY);
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleWheel = (e) => {
+    e.preventDefault(); // Prevent page scrolling
+    const scaleFactor = 0.1;
+    const newZoomLevel = Math.max(1, Math.min(3, zoomLevel + (e.deltaY < 0 ? scaleFactor : -scaleFactor))); // Zoom between 1x and 3x
+    setZoomLevel(newZoomLevel);
+    setPanX(0); // Reset pan when zooming with scroll wheel
+    setPanY(0);
+  };
+  // --- END FUNCTIONS ---
+
 
   const achievements = [
     {
@@ -292,12 +368,12 @@ export function AchievementsSection() {
   };
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="achievements" 
+    <section
+      ref={sectionRef}
+      id="achievements"
       className={`relative py-8 md:py-24 px-3 md:px-4 min-h-screen overflow-hidden transition-colors duration-500 `}
     >
-      
+
 
       {/* Floating Particles */}
       <div className="absolute inset-0 pointer-events-none">
@@ -310,7 +386,7 @@ export function AchievementsSection() {
               top: `${particle.y}%`,
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              background: isDarkMode 
+              background: isDarkMode
                 ? `conic-gradient(from 0deg, #3b82f6, #8b5cf6, #f59e0b, #ef4444, #3b82f6)`
                 : `conic-gradient(from 0deg, #60a5fa, #a78bfa, #fbbf24, #f87171, #60a5fa)`,
               opacity: isDarkMode ? 0.1 : 0.05,
@@ -338,14 +414,14 @@ export function AchievementsSection() {
         <p className={`text-xs md:text-xl animate-fade-in-up mb-3 md:mb-4 px-4 ${themeClasses.secondaryText}`}>
           Milestones in my extraordinary learning journey
         </p>
-        
+
         {/* Interactive Star Rating */}
         <div className="flex justify-center">
           <div className="flex space-x-1">
             {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className="h-3 w-3 md:h-6 md:w-6 text-yellow-400 animate-twinkle cursor-pointer hover:scale-125 transition-transform" 
+              <Star
+                key={i}
+                className="h-3 w-3 md:h-6 md:w-6 text-yellow-400 animate-twinkle cursor-pointer hover:scale-125 transition-transform"
                 style={{ animationDelay: `${i * 0.2}s` }}
               />
             ))}
@@ -392,8 +468,8 @@ export function AchievementsSection() {
           <div
             key={achieve.id}
             className={`group relative transition-all duration-700 transform ${
-              animationTrigger 
-                ? 'animate-achievement-enter opacity-100 translate-y-0' 
+              animationTrigger
+                ? 'animate-achievement-enter opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-20'
             }`}
             style={{ animationDelay: `${i * 0.3}s` }}
@@ -402,9 +478,9 @@ export function AchievementsSection() {
           >
             {/* Glowing Border Effect */}
             <div className={`absolute inset-0 rounded-xl md:rounded-3xl bg-gradient-to-r from-transparent via-${isDarkMode ? 'white' : 'gray-900'}/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-border-glow`}></div>
-            
+
             {/* Main Achievement Card */}
-            <div 
+            <div
               className={`relative p-3 md:p-8 rounded-xl md:rounded-3xl backdrop-blur-xl border shadow-xl hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.02] overflow-hidden ${themeClasses.cardBg} ${themeClasses.cardBorder}`}
               style={{ background: isDarkMode ? achieve.bgPattern : achieve.lightBgPattern }}
             >
@@ -446,16 +522,17 @@ export function AchievementsSection() {
                   <Image className="h-3 w-3 md:h-5 md:w-5 text-cyan-400" />
                   <h4 className={`text-xs md:text-lg font-semibold ${themeClasses.primaryText}`}>{achieve.imageType}</h4>
                 </div>
-                
+
                 {isMobile ? (
-                  // Mobile: Single rotating image
+                  // Mobile: Single rotating image with enhanced functionality
                   <div className="relative">
                     <div className={`relative overflow-hidden rounded-lg border-2 transition-all duration-300 ${themeClasses.imageBorder} ${themeClasses.imageHover}`}>
                       <img
                         src={achieve.images[currentImageIndex[achieve.id] || 0]?.url}
                         alt={achieve.images[currentImageIndex[achieve.id] || 0]?.alt}
-                        className="w-full h-32 md:h-40 object-cover transition-transform duration-500"
-                        onClick={() => openImageModal(achieve.images[currentImageIndex[achieve.id] || 0])}
+                        className="w-full h-32 md:h-40 object-cover transition-transform duration-500 cursor-pointer"
+                        // MODIFIED: Pass 1 for initialZoom when clicking the image itself
+                        onClick={() => openImageModal(achieve.images[currentImageIndex[achieve.id] || 0], 1)}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2 md:p-3">
                         <p className="text-white text-xs md:text-sm font-medium">
@@ -463,7 +540,14 @@ export function AchievementsSection() {
                         </p>
                       </div>
                       <div className="absolute top-2 right-2 bg-black/50 rounded-full p-1">
-                        <ZoomIn className="h-3 w-3 md:h-4 md:w-4 text-white" />
+                        {/* MODIFIED: The ZoomIn icon on the card now opens the modal zoomed in */}
+                        <ZoomIn
+                          className="h-3 w-3 md:h-4 md:w-4 text-white cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Stop propagation to prevent image click event from firing
+                            openImageModal(achieve.images[currentImageIndex[achieve.id] || 0], 1); // Pass 2 for initial zoom
+                          }}
+                        />
                       </div>
                     </div>
                     {/* Image indicators */}
@@ -479,13 +563,13 @@ export function AchievementsSection() {
                     </div>
                   </div>
                 ) : (
-                  // Desktop: Grid layout
+                  // Desktop: Grid layout (UNTOUCHED)
                   <div className="grid grid-cols-2 gap-2 md:gap-3">
                     {achieve.images.map((img, imgIdx) => (
                       <div
                         key={imgIdx}
                         className="relative group/img cursor-pointer transition-all duration-300 hover:scale-105"
-                        onClick={() => openImageModal(img)}
+                        onClick={() => openImageModal(img, 1)} // Explicitly pass 1, or just openImageModal(img) works too
                       >
                         <div className={`relative overflow-hidden rounded-lg border-2 transition-all duration-300 ${themeClasses.imageBorder} ${themeClasses.imageHover}`}>
                           <img
@@ -495,6 +579,7 @@ export function AchievementsSection() {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300"></div>
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300">
+                            {/* The ZoomIn icon on the card itself just opens the modal */}
                             <ZoomIn className="h-4 w-4 md:h-6 md:w-6 text-white" />
                           </div>
                         </div>
@@ -504,217 +589,142 @@ export function AchievementsSection() {
                   </div>
                 )}
               </div>
-
-              {/* Responsive Stats Grid */}
-              <div className="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
-                {achieve.stats.map((stat, idx) => (
-                  <div
-                    key={idx}
-                    className="relative p-3 md:p-4 rounded-xl md:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 group-hover:scale-105"
-                    style={{ animationDelay: `${idx * 0.1}s` }}
-                  >
-                    <div className="flex items-center gap-2 text-gray-300 mb-1 md:mb-2">
-                      <div className="p-1 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500">
-                        {stat.icon}
+                {/* Responsive Stats Grid */}
+                <div className="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
+                  {achieve.stats.map((stat, idx) => (
+                    <div
+                      key={idx}
+                      className="relative p-3 md:p-4 rounded-xl md:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 group-hover:scale-105"
+                      style={{ animationDelay: `${idx * 0.1}s` }}
+                    >
+                      <div className="flex items-center gap-2 text-gray-300 mb-1 md:mb-2">
+                        <div className="p-1 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500">
+                          {stat.icon}
+                        </div>
+                        <span className="text-xs md:text-sm font-medium">{stat.label}</span>
                       </div>
-                      <span className="text-xs md:text-sm font-medium">{stat.label}</span>
+                      <div className="text-lg md:text-2xl font-bold text-white group-hover:text-yellow-300 transition-colors duration-300">
+                        {stat.value}
+                      </div>
                     </div>
-                    <div className="text-lg md:text-2xl font-bold text-white group-hover:text-yellow-300 transition-colors duration-300">
-                      {stat.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* Mobile-Friendly Expandable Details */}
-              <div className="mb-4 md:mb-6">
-                <button
-                  onClick={() => toggleDetail(achieve.id)}
-                  className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300 group-hover:scale-105 w-full md:w-auto"
-                >
-                  {showDetails[achieve.id] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  <span className="text-sm md:text-base font-semibold">
-                    {showDetails[achieve.id] ? 'Hide' : 'Show'} Details
-                  </span>
-                  <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${showDetails[achieve.id] ? 'rotate-90' : ''}`} />
-                </button>
-                
-                {showDetails[achieve.id] && (
-                  <div className="mt-4 animate-fade-in-up">
-                    <ul className="space-y-2">
-                      {achieve.details.map((detail, detailIdx) => (
-                        <li
-                          key={detailIdx}
-                          className="flex items-start gap-3 text-gray-300 animate-slide-in-left text-sm md:text-base"
-                          style={{ animationDelay: `${detailIdx * 0.1}s` }}
-                        >
-                          <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-400 mt-0.5 flex-shrink-0 animate-twinkle" />
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              {/* Responsive Badges */}
-              <div className="flex flex-wrap gap-2 md:gap-3">
-                {achieve.badges.map((badge, badgeIdx) => (
-                  <span
-                    key={badgeIdx}
-                    className={`px-2 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-white bg-gradient-to-r ${achieve.gradient} shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-badge-glow`}
-                    style={{ animationDelay: `${badgeIdx * 0.2}s` }}
+                {/* Mobile-Friendly Expandable Details */}
+                <div className="mb-4 md:mb-6">
+                  <button
+                    onClick={() => toggleDetail(achieve.id)}
+                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300 group-hover:scale-105 w-full md:w-auto"
                   >
-                    {badge}
-                  </span>
-                ))}
+                    {showDetails[achieve.id] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    <span className="text-sm md:text-base font-semibold">
+                      {showDetails[achieve.id] ? 'Hide' : 'Show'} Details
+                    </span>
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${showDetails[achieve.id] ? 'rotate-90' : ''}`} />
+                  </button>
+
+                  {showDetails[achieve.id] && (
+                    <div className="mt-4 animate-fade-in-up">
+                      <ul className="space-y-2">
+                        {achieve.details.map((detail, detailIdx) => (
+                          <li
+                            key={detailIdx}
+                            className="flex items-start gap-3 text-gray-300 animate-slide-in-left text-sm md:text-base"
+                            style={{ animationDelay: `${detailIdx * 0.1}s` }}
+                          >
+                            <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-400 mt-0.5 flex-shrink-0 animate-twinkle" />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Responsive Badges */}
+                <div className="flex flex-wrap gap-2 md:gap-3">
+                  {achieve.badges.map((badge, badgeIdx) => (
+                    <span
+                      key={badgeIdx}
+                      className={`px-2 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-white bg-gradient-to-r ${achieve.gradient} shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-badge-glow`}
+                      style={{ animationDelay: `${badgeIdx * 0.2}s` }}
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Enhanced Mobile-Friendly Modal */}
+
+      {/* --- MODIFIED Enhanced Mobile-Friendly Modal --- */}
       {showImageModal && selectedImage && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="relative max-w-4xl max-h-[95vh] w-full bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden animate-scale-in">
-            <div className="absolute top-2 right-2 z-10">
+        <div
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+          // Add global mouse up listener for dragging
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp} // Stop dragging if mouse leaves modal area
+        >
+          <div className="relative max-w-4xl max-h-[95vh] w-full bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden animate-scale-in flex flex-col">
+            {/* Modal Header/Controls */}
+            <div className="absolute top-2 right-2 z-10 flex gap-2">
+              {zoomLevel > 1 && ( // Show pan icon only when zoomed
+                <button
+                  className="p-2 rounded-full bg-black/70 text-white cursor-grab active:cursor-grabbing"
+                  title="Drag to pan"
+                >
+                  <Move className="h-5 w-5" />
+                </button>
+              )}
+              <button
+                onClick={handleZoomClick}
+                className="p-2 rounded-full bg-black/70 hover:bg-black/90 text-white transition-colors duration-300"
+                title={zoomLevel === 1 ? "Zoom In" : "Zoom Out"}
+              >
+                {zoomLevel === 1 ? <ZoomIn className="h-5 w-5" /> : <X className="h-5 w-5" />} {/* Use X for zoom out */}
+              </button>
               <button
                 onClick={closeImageModal}
                 className="p-2 rounded-full bg-black/70 hover:bg-black/90 text-white transition-colors duration-300"
+                title="Close"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <img
-              src={selectedImage.url}
-              alt={selectedImage.alt}
-              className="w-full h-auto max-h-[70vh] object-contain"
-            />
-            <div className="p-4 md:p-6 bg-gradient-to-t from-black/80 to-transparent">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-2">{selectedImage.caption}</h3>
-              <p className="text-gray-300 text-sm md:text-base">{selectedImage.alt}</p>
+
+            {/* Image Container with Zoom/Pan */}
+            <div
+              className="relative flex-grow flex items-center justify-center overflow-hidden"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onWheel={handleWheel} // For mouse wheel zoom
+              style={{ cursor: zoomLevel > 1 && isDragging ? 'grabbing' : zoomLevel > 1 ? 'grab' : 'default' }}
+            >
+              <img
+                ref={imageRef} // Attach ref to image
+                src={selectedImage.url}
+                alt={selectedImage.alt}
+                className="max-w-full max-h-[70vh] object-contain transition-transform duration-100 ease-out" // Faster transition for smooth zoom/pan
+                style={{
+                  transform: `scale(${zoomLevel}) translate(${panX}px, ${panY}px)`,
+                  transformOrigin: 'center center', // Keep origin centered for zoom
+                }}
+              />
             </div>
+
+            {/* Modal Caption */}
+            {selectedImage.caption && (
+              <div className={`p-3 md:p-4 text-center border-t ${themeClasses.modalBorder}`}>
+                <p className={`text-sm md:text-base ${themeClasses.secondaryText}`}>
+                  {selectedImage.caption}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes text-glow {
-          0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
-          50% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.5; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1.2); }
-        }
-        
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        
-        @keyframes border-glow {
-          0%, 100% { opacity: 0; transform: scale(0.95); }
-          50% { opacity: 1; transform: scale(1.05); }
-        }
-        
-        @keyframes achievement-enter {
-          from {
-            opacity: 0;
-            transform: translateY(60px) rotateX(15deg);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) rotateX(0deg);
-          }
-        }
-        
-        @keyframes slide-in-stagger {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes slide-in-left {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes scale-in {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        
-        @keyframes badge-glow {
-          0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
-          50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
-        }
-        
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-
-        .animate-float { animation: float 15s ease-in-out infinite; }
-        .animate-gradient-x { animation: gradient-x 3s ease infinite; background-size: 400% 400%; }
-        .animate-text-glow { animation: text-glow 2s ease-in-out infinite; }
-        .animate-twinkle { animation: twinkle 1.5s ease-in-out infinite; }
-        .animate-shimmer { animation: shimmer 2s infinite; }
-        .animate-border-glow { animation: border-glow 2s ease-in-out infinite; }
-        .animate-achievement-enter { animation: achievement-enter 0.8s ease-out forwards; }
-        .animate-slide-in-stagger { animation: slide-in-stagger 0.6s ease-out forwards; }
-        .animate-slide-in-left { animation: slide-in-left 0.4s ease-out forwards; }
-        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-        .animate-scale-in { animation: scale-in 0.3s ease-out forwards; }
-        .animate-badge-glow { animation: badge-glow 2s ease-in-out infinite; }
-        .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
-      `}</style>
     </section>
   );
 }
