@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Quote, Star, ChevronLeft, ChevronRight, ExternalLink, Linkedin, Award } from 'lucide-react';
+import { Quote, Star, ChevronLeft, ChevronRight, ExternalLink, Linkedin, Award, Play, Pause } from 'lucide-react';
 
 export function CompactTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const testimonials = [
     {
@@ -22,7 +24,7 @@ export function CompactTestimonials() {
       name: "Yash Chauhan",
       role: "Artist & Developer",
       company: "Creative Professional",
-      content: "Excited to share that I've successfully completed the Google Arcade program 2024, reaching the Champions Milestone! Thanks to my dedicated facilitator  Sir, for their invaluable guidance, readily available assistance, and continuous support. Your mentorship has been instrumental in my success..",
+      content: "Excited to share that I've successfully completed the Google Arcade program 2024, reaching the Champions Milestone! Thanks to my dedicated facilitator Sir, for their invaluable guidance, readily available assistance, and continuous support. Your mentorship has been instrumental in my success.",
       achievement: "Champions Milestone 2024",
       rating: 5,
       linkedinUrl: "https://www.linkedin.com/posts/yash-chauhan-548a31246_excited-to-share-that-ive-successfully-completed-activity-7313190177298952195-ohdH?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2qPnUBovNe5P8IEfFbrbFXCgKQ1WpBuNA",
@@ -34,7 +36,7 @@ export function CompactTestimonials() {
       name: "Kunal Maurya",
       role: "Coordinator - Techtract",
       company: "Maharaja Agrasen Institute of Technology",
-      content: "I'm glad to share that I've officially unlocked the hashtag #ChampionMilestone with Google Cloud Arcade! After months of dedication, hands-on labs, and real-world challenges.🙏 A special shoutout to  Anshul Kotwal for his constant support and guidance throughout this journey",
+      content: "I'm glad to share that I've officially unlocked the #ChampionMilestone with Google Cloud Arcade! After months of dedication, hands-on labs, and real-world challenges. A special shoutout to Anshul Kotwal for his constant support and guidance throughout this journey.",
       achievement: "Champion Milestone",
       rating: 5,
       linkedinUrl: "https://www.linkedin.com/posts/kunal-maurya-a58035304_championmilestone-googlearcade-championmilestone-activity-7312321084949684224-T0cs?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2qPnUBovNe5P8IEfFbrbFXCgKQ1WpBuNA",
@@ -46,7 +48,7 @@ export function CompactTestimonials() {
       name: "Shreya Garg",
       role: "Engineering Student",
       company: "Ajay Kumar Garg Engineering College",
-      content: "Big thanks to Google Cloud Skills Boost for making learning fun and impactful! 🙌 A special thank you to my guide Anshul Kotwal  for his invaluable help and support throughout the event!.",
+      content: "Big thanks to Google Cloud Skills Boost for making learning fun and impactful! A special thank you to my guide Anshul Kotwal for his invaluable help and support throughout the event!",
       achievement: "Champion Milestone + Swags",
       rating: 5,
       linkedinUrl: "https://www.linkedin.com/posts/shreya-garg-a3b83b29b_googlecloud-googlearcade-cloudlearning-activity-7312159910572486656-dA22?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2qPnUBovNe5P8IEfFbrbFXCgKQ1WpBuNA",
@@ -58,7 +60,7 @@ export function CompactTestimonials() {
       name: "Sai Sukeerth Annadata",
       role: "PM Apprentice @Google",
       company: "Trust & Safety | Philomath",
-      content: "Hello 👋  These facilitators are rock-on 🤘🎸 and deserve a big, seperate shout-out for their constant support and clarifications throughout the program! 🚀 From July 22nd to September 22nd 2024, I actively participated in the program.",
+      content: "Hello 👋 These facilitators are rock-on 🤘🎸 and deserve a big, separate shout-out for their constant support and clarifications throughout the program! From July 22nd to September 22nd 2024, I actively participated in the program.",
       achievement: "259 labs, 65 badges, 50 courses",
       rating: 5,
       linkedinUrl: "https://www.linkedin.com/posts/activity-7311776263654830080-NfZU?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2qPnUBovNe5P8IEfFbrbFXCgKQ1WpBuNA",
@@ -70,7 +72,7 @@ export function CompactTestimonials() {
       name: "Yug Bhatt",
       role: "Software Engineer",
       company: "C, C++, Java, Python Specialist",
-      content: "🎉 Leveled Up My Cloud Skills! A massive thank you to Anshul Kotwal  for his guidance, support, and motivation throughout this journey. 🙏  🔥",
+      content: "🎉 Leveled Up My Cloud Skills! A massive thank you to Anshul Kotwal for his guidance, support, and motivation throughout this journey. 🙏 🔥",
       achievement: "Cloud Skills Mastery",
       rating: 5,
       linkedinUrl: "https://www.linkedin.com/posts/yug-bhatt-497775256_googlecloud-cloudskills-lifelonglearner-activity-7310256454005907456-94sN?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2qPnUBovNe5P8IEfFbrbFXCgKQ1WpBuNA",
@@ -127,20 +129,42 @@ export function CompactTestimonials() {
     }
   ];
 
-  // Auto-slide every 4 seconds
+  // Auto-slide functionality
   useEffect(() => {
+    if (!isAutoPlaying) return;
+    
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 4000);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+        setIsTransitioning(false);
+      }, 150);
+    }, 5000);
+    
     return () => clearInterval(interval);
-  }, []);
+  }, [isAutoPlaying, testimonials.length]);
+
+  const changeSlide = (newIndex) => {
+    if (newIndex === currentIndex) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setIsTransitioning(false);
+    }, 150);
+  };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    const newIndex = (currentIndex + 1) % testimonials.length;
+    changeSlide(newIndex);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    const newIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+    changeSlide(newIndex);
+  };
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(!isAutoPlaying);
   };
 
   const openLinkedInPost = (url, e) => {
@@ -151,129 +175,200 @@ export function CompactTestimonials() {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-12 px-4 ">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 ">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">
-            What People{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              Say
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+            What Our{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800">
+              Students Say
             </span>
           </h2>
-          <div className="flex justify-center items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <div className="flex items-center gap-1">
-              <Star className="h-4 w-4 text-yellow-500 fill-current" />
-              <span>5.0 Rating</span>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
+            Real testimonials from our Google Cloud Arcade participants who achieved remarkable milestones & from OSS technical Workshop coordinated by me
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-500 fill-current" />
+                ))}
+              </div>
+              <span className="font-medium">5.0 Rating</span>
             </div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-            <span>1000+ Happy Students</span>
+            <div className="hidden sm:block w-1 h-1 bg-gray-400 rounded-full"></div>
+            <span className="font-medium">1000+ Happy Students</span>
           </div>
         </div>
 
         {/* Main Testimonial Card */}
-        <div className="relative">
+        <div className="relative max-w-4xl mx-auto">
           <div 
-            className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+            className={`group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 dark:border-gray-700/60 shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2 ${isTransitioning ? 'opacity-75 scale-[0.98]' : 'opacity-100 scale-100'}`}
             onClick={() => openLinkedInPost(currentTestimonial.linkedinUrl)}
           >
             {/* Quote Icon */}
-            <div className="absolute -top-4 left-6">
-              <div className={`p-2 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} shadow-lg`}>
-                <Quote className="h-4 w-4 text-white" />
+            <div className="absolute -top-3 sm:-top-4 left-4 sm:left-6">
+              <div className={`p-2 sm:p-3 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} shadow-lg`}>
+                <Quote className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
               </div>
             </div>
 
             {/* LinkedIn Icon */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+            <div className="absolute top-3 sm:top-4 right-3 sm:right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
               <div 
                 className="p-2 rounded-full bg-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
                 onClick={(e) => openLinkedInPost(currentTestimonial.linkedinUrl, e)}
               >
-                <Linkedin className="h-4 w-4 text-white" />
+                <Linkedin className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
               </div>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 sm:pt-6">
               {/* User Info */}
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} p-0.5`}>
-                  <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center">
-                    <span className={`text-sm font-bold bg-gradient-to-r ${currentTestimonial.gradient} bg-clip-text text-transparent`}>
-                      {currentTestimonial.avatar}
-                    </span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} p-0.5 flex-shrink-0`}>
+                    <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center">
+                      <span className={`text-sm sm:text-base lg:text-lg font-bold bg-gradient-to-r ${currentTestimonial.gradient} bg-clip-text text-transparent`}>
+                        {currentTestimonial.avatar}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-white truncate">
+                      {currentTestimonial.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                      {currentTestimonial.role}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 truncate">
+                      {currentTestimonial.company}
+                    </p>
                   </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-2xl text-gray-800 dark:text-white">
-                    {currentTestimonial.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {currentTestimonial.role} • {currentTestimonial.company}
-                  </p>
-                </div>
                 {/* Rating */}
-                <div className="flex gap-1">
+                <div className="flex gap-1 sm:ml-auto">
                   {[...Array(currentTestimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
               </div>
 
               {/* Achievement Badge */}
-              <div className="mb-4">
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} bg-opacity-10 border border-current border-opacity-20`}>
-                  <Award className="h-3 w-3" />
-                  <span className={`text-xs font-medium bg-gradient-to-r ${currentTestimonial.gradient} bg-clip-text`}>
+              <div className="mb-4 sm:mb-6">
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-full bg-gradient-to-r ${currentTestimonial.gradient} bg-opacity-10 border border-current border-opacity-20`}>
+                  <Award className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${currentTestimonial.gradient} bg-clip-text `}>
                     {currentTestimonial.achievement}
                   </span>
                 </div>
               </div>
 
               {/* Testimonial Content */}
-              <blockquote className="text-gray-700 dark:text-gray-300 leading-relaxed italic text-sm md:text-base">
-                "{currentTestimonial.content}"
+              <blockquote className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base lg:text-lg mb-4 sm:mb-6">
+                <span className="text-4xl sm:text-5xl text-gray-300 dark:text-gray-600 leading-none font-serif mr-1">"</span>
+                {currentTestimonial.content}
+                <span className="text-4xl sm:text-5xl text-gray-300 dark:text-gray-600 leading-none font-serif ml-1">"</span>
               </blockquote>
 
               {/* External Link Hint */}
-              <div className="flex items-center gap-2 mt-4 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <ExternalLink className="h-3 w-3" />
-                <span>Click to view LinkedIn post</span>
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>Click to view original LinkedIn post</span>
               </div>
             </div>
           </div>
 
-          {/* Navigation Arrows */}
+          {/* Desktop Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-2 rounded-full bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 lg:-translate-x-8 p-3 rounded-full bg-white/95 dark:bg-gray-800/95 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 focus:ring-2 focus:ring-blue-500 focus:outline-none z-10 items-center justify-center"
             aria-label="Previous testimonial"
           >
-            <ChevronLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6 text-gray-700 dark:text-gray-300" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-2 rounded-full bg-white/90 dark:bg-gray-800/90 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 lg:translate-x-8 p-3 rounded-full bg-white/95 dark:bg-gray-800/95 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 focus:ring-2 focus:ring-blue-500 focus:outline-none z-10 items-center justify-center"
             aria-label="Next testimonial"
           >
-            <ChevronRight className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-700 dark:text-gray-300" />
           </button>
         </div>
 
-        {/* Indicators */}
-        <div className="flex justify-center gap-2 mt-6">
+        {/* Mobile Navigation */}
+        <div className="flex sm:hidden justify-between items-center mt-6 px-4">
+          <button
+            onClick={prevSlide}
+            className="p-2.5 rounded-full bg-white/95 dark:bg-gray-800/95 border border-gray-200/60 dark:border-gray-700/60 shadow-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+          </button>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+              {currentIndex + 1} / {testimonials.length}
+            </span>
+            <button
+              onClick={toggleAutoPlay}
+              className="p-2 rounded-full bg-white/95 dark:bg-gray-800/95 border border-gray-200/60 dark:border-gray-700/60 shadow-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+            >
+              {isAutoPlaying ? (
+                <Pause className="h-3 w-3 text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Play className="h-3 w-3 text-gray-700 dark:text-gray-300" />
+              )}
+            </button>
+          </div>
+          
+          <button
+            onClick={nextSlide}
+            className="p-2.5 rounded-full bg-white/95 dark:bg-gray-800/95 border border-gray-200/60 dark:border-gray-700/60 shadow-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+          </button>
+        </div>
+
+        {/* Progress Indicators */}
+        <div className="flex justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
           {testimonials.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              onClick={() => changeSlide(idx)}
+              className={`transition-all duration-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                 idx === currentIndex
-                  ? `bg-gradient-to-r ${currentTestimonial.gradient} scale-125`
-                  : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                  ? `w-8 sm:w-10 h-2 sm:h-2.5 bg-gradient-to-r ${currentTestimonial.gradient}`
+                  : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
               }`}
               aria-label={`Go to testimonial ${idx + 1}`}
             />
           ))}
+        </div>
+
+        {/* Auto-play Controls (Desktop) */}
+        <div className="hidden sm:flex justify-center mt-6">
+          <button
+            onClick={toggleAutoPlay}
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-gray-800/80 border border-gray-200/60 dark:border-gray-700/60 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm text-gray-700 dark:text-gray-300"
+            aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+          >
+            {isAutoPlaying ? (
+              <>
+                <Pause className="h-3 w-3" />
+                <span>Pause</span>
+              </>
+            ) : (
+              <>
+                <Play className="h-3 w-3" />
+                <span>Play</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
     </section>

@@ -12,6 +12,8 @@ import {
     Sparkles,
     CheckCircle,
     ArrowRight,
+    Cloud,
+    ServerIcon,
     Database,
     ChevronRight,
     Verified,
@@ -86,17 +88,17 @@ const certificates = [
         id: 4,
         title: "Google Cloud Arcade Program",
         issuer: "Google Cloud Skills Boost",
-        date: "2024-2025",
-        credentialId: "8cafa6e3-758e-4b5c-a999-009b3e7db7b7",
+        date: "June 2025",
+        credentialId: "MSMKutvRbzn",
         description: "Hands-on experience with Google Cloud Platform services, cloud architecture, and deployment strategies",
-        skills: ["Google Cloud Platform", "Cloud Architecture", "Kubernetes", "Cloud Storage", "Cloud Functions", "BigQuery"],
+        skills: ["Google Cloud Platform", "Leadership", "Public Speaking", "Technical Community Building", "Cloud Functions", "Corporate Communications"],
         icon: Shield,
         gradient: "from-indigo-500 to-blue-500",
         color: "indigo",
         verified: true,
         level: "Professional",
         hours: "150 hours",
-        link: "https://www.cloudskillsboost.google/public_profiles/8f46ea4c-4254-4d52-b575-eba452e010a1",
+        link: "https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy9jMzI3NWEyN2I3YzRlZGZmL0VkSDZSeEtZT2laR2xjQVZqbVlmWGRJQk5KdGIxSjZncXhYSU9oWUFwVmJOQWc&cid=C3275A27B7C4EDFF&id=C3275A27B7C4EDFF%21s1247fad13a98462695c0158e661f5dd2&parId=C3275A27B7C4EDFF%21s7b35113f8d9d42d08cc2b92c74280b89&o=OneUp",
         category: "Cloud Computing"
     },
     {
@@ -115,7 +117,34 @@ const certificates = [
         hours: "Assessment",
         link: "https://www.hackerrank.com/certificates/48b744735774",
         category: "Database"
+    },
+    {
+        id: 6,
+        title: "Google Cloud Facilitator",
+        issuer: "Google Cloud Community India",
+        date: "Oct 2024",
+        credentialId: "an1e4w9CVEHm",
+        description:
+            "Hands-on experience with Google Cloud Platform services, cloud architecture, and deployment strategies.",
+        skills: [
+            "Google Cloud Platform",
+            "Leadership",
+            "Time Management",
+            "Technical Community Building",
+            "Motivational Speaking",
+            "Corporate Communications"
+        ],
+        icon: Cloud,
+        gradient: "from-[#0f2027] via-[#203a43] to-[#2c5364]", // Dark Sleek Night
+color: "slate",
+
+        verified: true,
+        level: "Professional",
+        hours: "150 hours",
+        link: "https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy9jMzI3NWEyN2I3YzRlZGZmL0ViNnRkLTNIRi1kSW9hYk1Xdnl2bmtjQnhxeENENW5sanQ1VUVuU1RSSXpxdnc&cid=C3275A27B7C4EDFF&id=C3275A27B7C4EDFF%21sed77adbe17c748e7a1a6cc5afcaf9e47&parId=C3275A27B7C4EDFF%21s7b35113f8d9d42d08cc2b92c74280b89&o=OneUp",
+        category: "Cloud Computing"
     }
+
 ];
 
 const FloatingParticles = () => {
@@ -125,18 +154,18 @@ const FloatingParticles = () => {
     useEffect(() => {
         // Check for dark mode
         const checkDarkMode = () => {
-            const isDark = document.documentElement.classList.contains('dark') || 
-                           window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = document.documentElement.classList.contains('dark') ||
+                window.matchMedia('(prefers-color-scheme: dark)').matches;
             setIsDarkMode(isDark);
         };
 
         checkDarkMode();
         window.addEventListener('storage', checkDarkMode);
-        
+
         // Reduce particles on mobile
         const isMobile = window.innerWidth < 768;
         const particleCount = isMobile ? 15 : 30;
-        
+
         const newParticles = Array.from({ length: particleCount }, (_, i) => ({
             id: i,
             x: Math.random() * window.innerWidth,
@@ -145,7 +174,7 @@ const FloatingParticles = () => {
             speedX: (Math.random() - 0.5) * (isMobile ? 1.5 : 3),
             speedY: (Math.random() - 0.5) * (isMobile ? 1.5 : 3),
             opacity: Math.random() * 0.5 + 0.1,
-            color: isDarkMode 
+            color: isDarkMode
                 ? ['#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899'][Math.floor(Math.random() * 6)]
                 : ['#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899'][Math.floor(Math.random() * 6)],
             shape: Math.random() > 0.5 ? 'circle' : 'square'
@@ -217,10 +246,10 @@ const CertificateCard = ({ certificate, index }) => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        
+
         checkMobile();
         window.addEventListener('resize', checkMobile);
-        
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
@@ -528,10 +557,10 @@ export const CertificatesSection = () => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        
+
         checkMobile();
         window.addEventListener('resize', checkMobile);
-        
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
@@ -601,7 +630,7 @@ export const CertificatesSection = () => {
                             <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 bg-green-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
                         </div>
                     </div>
-                    
+
                     {/* Mobile-friendly description */}
                     <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 text-sm sm:text-base lg:text-lg max-w-4xl mx-auto leading-relaxed mb-4 sm:mb-6 px-2 sm:px-4">
                         Professional certifications and achievements that validate my expertise across
@@ -616,8 +645,8 @@ export const CertificatesSection = () => {
                                 key={category}
                                 onClick={() => setFilter(category)}
                                 className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-500 transform hover:scale-105 ${filter === category
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
-                                        : 'bg-gray-800/50 dark:bg-gray-800/50 light:bg-gray-200/80 text-gray-300 dark:text-gray-300 light:text-gray-700 hover:bg-gray-700/50 dark:hover:bg-gray-700/50 light:hover:bg-gray-300/80 border border-gray-600/50 dark:border-gray-600/50 light:border-gray-300/50 hover:border-gray-500/50 dark:hover:border-gray-500/50 light:hover:border-gray-400/50'
+                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
+                                    : 'bg-gray-800/50 dark:bg-gray-800/50 light:bg-gray-200/80 text-gray-300 dark:text-gray-300 light:text-gray-700 hover:bg-gray-700/50 dark:hover:bg-gray-700/50 light:hover:bg-gray-300/80 border border-gray-600/50 dark:border-gray-600/50 light:border-gray-300/50 hover:border-gray-500/50 dark:hover:border-gray-500/50 light:hover:border-gray-400/50'
                                     }`}
                                 style={{
                                     animationDelay: `${index * 0.1}s`,
