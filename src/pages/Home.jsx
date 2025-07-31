@@ -12,6 +12,7 @@ import { EducationSection } from "../components/EducationSection.jsx";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
 import { PortfolioLoader } from "../components/PortfolioLoader"; 
+import { CompactTestimonials } from '../components/TestimonialsSection.jsx';
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,7 @@ export const Home = () => {
             <ProjectsSection />
             <AchievementsSection />
             <CertificatesSection />
+            <CompactTestimonials/>
             <ContactSection />
           </main>
           <Footer />

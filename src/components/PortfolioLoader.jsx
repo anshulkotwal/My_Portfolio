@@ -12,11 +12,8 @@ export const PortfolioLoader = ({ onLoadingComplete }) => {
   { name: "Anshul Kotwal", lang: "English", script: "latin" },
   { name: "अंशुल कोटवाल", lang: "हिंदी", script: "devanagari" },
   { name: "অংশুল কোটওয়াল", lang: "বাংলা", script: "bengali" },
-  { name: "انشول کوٹوال", lang: "اردو", script: "arabic" },
   { name: "ਅੰਸ਼ੁਲ ਕੋਟਵਾਲ", lang: "ਪੰਜਾਬੀ", script: "gurmukhi" },
-  { name: "અંશુલ કોટવાલ", lang: "ગુજરાતી", script: "gujarati" },
   { name: "అంశుల్ కోట్వాల్", lang: "తెలుగు", script: "telugu" },
-  { name: "ಅಂಶುಲ್ ಕೋಟ್ವಾಲ್", lang: "ಕನ್ನಡ", script: "kannada" },
   { name: "அன்ஷுல் கோட்வால்", lang: "தமிழ்", script: "tamil" },
   { name: "Anshul Kotwal", lang: "Français", script: "latin" },
   { name: "Anshul Kotwal", lang: "Español", script: "latin" }
