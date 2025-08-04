@@ -1,43 +1,31 @@
-import { ArrowRight, ExternalLink, Github, Zap, Globe, Gamepad2, Sparkles, Brain, Palette, GraduationCap, Star, Code, Layers, Rocket } from "lucide-react";
+import { ArrowRight, ExternalLink, Github, Zap, Globe, Gamepad2, Sparkles, Brain, Palette, GraduationCap, Star, Code, Layers, Rocket ,MessageCircle} from "lucide-react";
 import { useEffect, useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 
 const projects = [
-  {
-    id: 1,
-    title: "AI Agent with Gemini API + MCP",
-    description: "Intelligent chatbot using Google Gemini API and Model Context Protocol for memory-aware interactions with real-time SSE messaging.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=entropy&auto=format&q=80",
-    tags: ["Node.js", "Gemini API", "MCP", "SSE", "Zod"],
-    demoUrl: "#",
-    githubUrl: "https://github.com/anshulkotwal/AI_Agent",
-    icon: Brain,
-    gradient: "from-purple-500 to-pink-500",
-    color: "purple",
-    difficulty: "Advanced",
-    category: "AI/ML"
-  },
+ {
+ id: 1,
+ title: "✨ Vartalapa - Language Exchange Platform ✨",
+ description: "Full-stack chat application with real-time messaging, video calls, screen sharing, friend system, and language matching. Built with React, Express, MongoDB, and Stream SDK featuring 32 themes and glassmorphism UI.",
+ image: "/projects/project1.png",
+ tags: ["React.js", "Express.js", "MongoDB", "Stream SDK", "TailwindCSS", "JWT", "Real-time", "Video Calls"],
+ demoUrl: "https://vartalapa.onrender.com",
+ githubUrl: "https://github.com/anshulkotwal/vartalapa",
+ linkedinUrl: "https://www.linkedin.com/posts/anshul-kotwal_typingindicators-reactions-screensharing-activity-7358175320971071489-sICg",
+ icon: MessageCircle, 
+ gradient: "from-blue-500 to-purple-500",
+ color: "purple",
+ difficulty: "Advanced",
+ category: "Full-Stack"
+},
+  
   {
     id: 2,
-    title: "3D Portfolio - Zajno Inspired",
-    description: "Real-time 3D transitions and shaders built with Three.js and GLSL for an interactive portfolio site.",
-    image: "/projects/project2.png",
-    tags: ["Three.js", "GSAP", "GLSL", "Shaders", "WebGL"],
-    demoUrl: "https://zajno-awwwards.netlify.app/",
-    githubUrl: "https://github.com/anshulkotwal/Zajno",
-    icon: Palette,
-    gradient: "from-cyan-500 to-blue-500",
-    color: "cyan",
-    difficulty: "Expert",
-    category: "3D/Graphics"
-  },
-  {
-    id: 3,
     title: "Real-Time Chess Game",
     description: "Multiplayer chess built with WebSocket sync, drag-drop UI, audio feedback, and 99.9% uptime.",
     image: "/projects/project3.png",
     tags: ["Node.js", "Socket.io", "Chess.js", "WebSockets", "Tailwind"],
-    demoUrl: "",
+    demoUrl: "https://chess-com-452r.onrender.com",
     githubUrl: "https://github.com/anshulkotwal/chess.com",
     icon: Gamepad2,
     gradient: "from-green-500 to-teal-500",
@@ -46,7 +34,7 @@ const projects = [
     category: "Game Dev"
   },
   {
-    id: 4,
+    id: 3,
     title: "Cocktail - GSAP Animation Website",
     description: "Scroll-triggered animation portfolio with layered parallax and smooth UX. Built with Vite and React.",
     image: "/projects/project4.png",
@@ -60,7 +48,7 @@ const projects = [
     category: "Animation"
   },
   {
-    id: 5,
+    id: 4,
     title: "🎬 Movie Explorer",
     description: "A sleek, modern, and responsive movie discovery app built with React, Vite, and Tailwind CSS, powered by the TMDB API.",
     image: "/projects/project5.png", 
@@ -74,7 +62,7 @@ const projects = [
     category: "Web App"
   },
   {
-    id: 6,
+    id: 5,
     title: "Real-Time Geolocation Tracker",
     description: "Track users on the map in real-time using WebSockets and Leaflet.js. Optimized with Express and Socket.io.",
     image: "/projects/project6.jpeg",
@@ -88,7 +76,7 @@ const projects = [
     category: "Real-time"
   },
   {
-    id: 7,
+    id: 6,
     title: "Ajay Kumar Garg Engineering College Website",
     description: "Responsive and modern college website showcasing departments, placements, events, and achievements using HTML, CSS, and JavaScript.",
     image: "/projects/project7.png", 
@@ -100,7 +88,22 @@ const projects = [
     color: "indigo",
     difficulty: "Beginner",
     category: "Website"
-  }
+  },
+  {
+    id: 7,
+    title: "3D Portfolio - Zajno Inspired",
+    description: "Real-time 3D transitions and shaders built with Three.js and GLSL for an interactive portfolio site.",
+    image: "/projects/project2.png",
+    tags: ["Three.js", "GSAP", "GLSL", "Shaders", "WebGL"],
+    demoUrl: "https://zajno-awwwards.netlify.app/",
+    githubUrl: "https://github.com/anshulkotwal/Zajno",
+    icon: Palette,
+    gradient: "from-cyan-500 to-blue-500",
+    color: "cyan",
+    difficulty: "Expert",
+    category: "3D/Graphics"
+  },
+  
 ];
 
 const FloatingParticles = () => {
